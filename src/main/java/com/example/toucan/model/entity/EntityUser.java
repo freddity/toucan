@@ -11,7 +11,7 @@ public class EntityUser {
 
     public EntityUser(){}
 
-    public EntityUser(String username, String password){
+    public EntityUser(String email, String username, String password){
         this.username = username;
         this.password = password;
         this.blockedStatus = 0;
@@ -66,8 +66,8 @@ public class EntityUser {
         this.password = password;
     }
 
-    public void setBlockedStatus(int blockedStatus) {
-        this.blockedStatus = blockedStatus;
+    public int setBlockedStatus(int blockedStatus) {
+        return this.blockedStatus = blockedStatus;
     }
 
     public void setNoteList(List<EntityNote> noteList) {

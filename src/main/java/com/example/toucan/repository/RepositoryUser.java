@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface RepositoryUser extends CrudRepository<EntityUser, UUID> {
 
     EntityUser findEntityUserByUsername(String username);
+    EntityUser save(EntityUser entityUser);
 }
