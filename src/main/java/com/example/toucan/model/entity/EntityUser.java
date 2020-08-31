@@ -1,18 +1,28 @@
 package com.example.toucan.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "USERS")
 public class EntityUser {
 
+    public EntityUser(){}
+
+    public EntityUser(String username, String password){
+        this.username = username;
+        this.password = password;
+        this.blockedStatus = 0;
+    }
+
     @Id
-    @Column(length = 16, unique = true, nullable = false)
+    @Column(name = "uuid_user", length = 16, unique = true, nullable = false)
     private UUID uuid = UUID.randomUUID();
+
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -24,5 +34,43 @@ public class EntityUser {
     private int blockedStatus; //0 = not blocked
                                //1 = blocked
 
+    @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EntityNote> noteList = new ArrayList<>();
 
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getBlockedStatus() {
+        return blockedStatus;
+    }
+
+    public List<EntityNote> getNoteList() {
+        return noteList;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBlockedStatus(int blockedStatus) {
+        this.blockedStatus = blockedStatus;
+    }
+
+    public void setNoteList(List<EntityNote> noteList) {
+        this.noteList = noteList;
+    }
 }

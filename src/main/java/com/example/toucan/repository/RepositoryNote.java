@@ -1,5 +1,6 @@
 package com.example.toucan.repository;
 
+import com.example.toucan.model.entity.EntityNote;
 import com.example.toucan.model.entity.EntityUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface RepositoryUser extends CrudRepository<EntityUser, UUID> {
+public interface RepositoryNote extends CrudRepository<EntityNote, UUID> {
 
-    EntityUser findEntityUserByUsername(String username);
+    EntityNote findEntityNoteByOwner(EntityUser entityUser);
 }
