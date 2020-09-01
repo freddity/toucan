@@ -17,14 +17,8 @@ public class ServiceUser {
         this.repositoryUser = repositoryUser;
     }
 
-    //1 = successfully
-    //0 = unsuccessfully
-    public int createUser(String email ,String username, String password){
-        if (repositoryUser.save(new EntityUser(
-                email, username, password)) != null){
-            return 1;
-        }
-        return 0;
+    public EntityUser createUser(String email ,String username, String password){
+        return repositoryUser.save(new EntityUser(email, username, password));
     }
 
     public List getAllNotes(String username){

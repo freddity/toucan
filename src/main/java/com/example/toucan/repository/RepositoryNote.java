@@ -12,4 +12,5 @@ public interface RepositoryNote extends CrudRepository<EntityNote, UUID> {
 
     EntityNote findEntityNoteByOwner(EntityUser entityUser);
     EntityNote save(EntityNote entitynote);
+    void deleteByUuid(UUID uuid);
 }

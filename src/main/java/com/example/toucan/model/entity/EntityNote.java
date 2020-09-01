@@ -1,7 +1,6 @@
 package com.example.toucan.model.entity;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -10,13 +9,8 @@ public class EntityNote {
 
     public EntityNote(){}
 
-    public EntityNote(String title, String content, Date creationDate){
-        this.title = title;
-        this.content = content;
-        this.creationDate = creationDate;
-    }
-
-    public EntityNote(String title, String content, Date creationDate, EntityUser owner){
+    //creationDate pattern = yyyyMMddHHmm
+    public EntityNote(String title, String content, String creationDate, EntityUser owner){
         this.title = title;
         this.content = content;
         this.creationDate = creationDate;
@@ -34,7 +28,7 @@ public class EntityNote {
     private String content;
 
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private String creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
@@ -53,7 +47,7 @@ public class EntityNote {
         return content;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
