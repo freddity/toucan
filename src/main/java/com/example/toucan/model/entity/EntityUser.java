@@ -12,6 +12,7 @@ public class EntityUser {
     public EntityUser(){}
 
     public EntityUser(String email, String username, String password){
+        this.email = email;
         this.username = username;
         this.password = password;
         this.blockedStatus = 0;
@@ -34,12 +35,16 @@ public class EntityUser {
     private int blockedStatus; //0 = not blocked
                                //1 = blocked
 
-    @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EntityNote> noteList = new ArrayList<>();
 
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getUsername() {
@@ -56,6 +61,10 @@ public class EntityUser {
 
     public List<EntityNote> getNoteList() {
         return noteList;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setUsername(String username) {
