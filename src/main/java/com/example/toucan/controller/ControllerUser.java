@@ -21,13 +21,13 @@ public class ControllerUser {
 
     @PostMapping("/signup")
     public void signUp(@Valid @NonNull @RequestBody DtoUserSignUp dtoUserSignUp){
-        serviceUser.createUser(dtoUserSignUp.getEmail(),
-                               dtoUserSignUp.getUsername(),
-                               dtoUserSignUp.getPassword());
+        serviceUser.createUser(dtoUserSignUp.getUsername(),
+                               dtoUserSignUp.getPassword(),
+                               dtoUserSignUp.getRole());
     }
 
-    @DeleteMapping("/delete")
-    public void delete()
+    //@DeleteMapping("/delete")
+    //public void delete()
 
 
 }

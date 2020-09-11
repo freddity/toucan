@@ -2,7 +2,7 @@ package com.example.toucan.service;
 
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,26 +11,24 @@ import java.util.List;
 public class ServiceUser {
 
     private final RepositoryUser repositoryUser;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public ServiceUser(RepositoryUser repositoryUser){
+    public ServiceUser(RepositoryUser repositoryUser, PasswordEncoder passwordEncoder) {
         this.repositoryUser = repositoryUser;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public EntityUser createUser(String email ,String username, String password){
-        return repositoryUser.save(new EntityUser(email, username, password));
+    public EntityUser createUser(String username, String password, String role){
+        return repositoryUser.save(new EntityUser(username, passwordEncoder.encode(password), role));
     }
 
     public List getAllNotes(String username){
         return repositoryUser
-                .findEntityUserByUsername(username).getNoteList();
+                .findByUsername(username).getNoteList();
     }
 
-
-    //0 = not blocked
-    //1 = blocked
-    public int setBlockStatus(String username, int status) {
+    /*public boolean isNonLocked(String username, boolean status) {
         return repositoryUser
-                .findEntityUserByUsername(username).setBlockedStatus(status);
-    }
+                .findByUsername(username).isNonLocked(status);
+    }*/
 }

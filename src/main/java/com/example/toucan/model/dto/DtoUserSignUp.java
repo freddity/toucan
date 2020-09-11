@@ -7,25 +7,22 @@ import java.io.Serializable;
 public class DtoUserSignUp implements Serializable {
 
     @NotBlank
-    private final String email;
-
-    @NotBlank
     private final String username;
 
     @NotBlank
     private final String password;
 
-    public DtoUserSignUp(@JsonProperty("email") String email,
-                         @JsonProperty("username") String username,
-                         @JsonProperty("password") String password) {
-        this.email = email;
+    @NotBlank
+    private final String role;
+
+    public DtoUserSignUp(@JsonProperty("username") String username,
+                         @JsonProperty("password") String password,
+                         @JsonProperty("role") String role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
     public String getUsername() {
         return username;
@@ -33,5 +30,9 @@ public class DtoUserSignUp implements Serializable {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 }
