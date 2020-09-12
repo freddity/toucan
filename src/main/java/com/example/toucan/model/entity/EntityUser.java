@@ -23,7 +23,7 @@ public class EntityUser implements UserDetails {
     @Column(name = "uuid_user", length = 16, unique = true, nullable = false)
     private UUID uuid = UUID.randomUUID();
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)

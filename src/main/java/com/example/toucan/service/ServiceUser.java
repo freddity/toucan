@@ -1,7 +1,9 @@
 package com.example.toucan.service;
 
+import com.example.toucan.exception.UsernameAlreadyTakenException;
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,11 @@ public class ServiceUser {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public EntityUser createUser(String username, String password, String role){
-        return repositoryUser.save(new EntityUser(username, passwordEncoder.encode(password), role));
+    public EntityUser createUser(String username, String password, String role) throws UsernameAlreadyTakenException {
+        if (repositoryUser.findByUsername(username) == null) {
+            return repositoryUser.save(new EntityUser(username, passwordEncoder.encode(password), role));
+        }
+        throw new UsernameAlreadyTakenException(username);
     }
 
     public List getAllNotes(String username){
