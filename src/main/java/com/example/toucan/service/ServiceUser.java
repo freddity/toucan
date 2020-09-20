@@ -27,13 +27,5 @@ public class ServiceUser {
         throw new UsernameAlreadyTakenException(username);
     }
 
-    public List getAllNotes(String username){
-        return repositoryUser
-                .findByUsername(username).getNoteList();
-    }
 
-    /*public boolean isNonLocked(String username, boolean status) {
-        return repositoryUser
-                .findByUsername(username).isNonLocked(status);
-    }*/
 }
