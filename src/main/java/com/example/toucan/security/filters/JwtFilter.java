@@ -1,4 +1,4 @@
-package com.example.toucan.security;
+package com.example.toucan.security.filters;
 
 import com.example.toucan.util.JwtUtil;
 import io.jsonwebtoken.Claims;
