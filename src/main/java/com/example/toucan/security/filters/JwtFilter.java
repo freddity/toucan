@@ -1,5 +1,7 @@
 package com.example.toucan.security.filters;
 
+import com.example.toucan.model.dao.UserDetailsImpl;
+import com.example.toucan.security.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -23,9 +25,11 @@ import java.util.Set;
 
 public class JwtFilter extends OncePerRequestFilter {
 
+    private UserDetailsServiceImpl userDetailsService;
     private JwtUtil jwtUtil;
 
-    public JwtFilter(JwtUtil jwtUtil) {
+    public JwtFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+        this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -40,6 +44,15 @@ public class JwtFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             jwt = header.substring(7);
             username = jwtUtil.extractUsername(jwt);
+        }
+
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+
+            UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
+
+            if (jwtUtil.validateToken(jwt, userDetails)) {
+
+            }
         }
 
     }

@@ -1,13 +1,9 @@
 package com.example.toucan.service;
 
-import com.example.toucan.exception.UsernameAlreadyTakenException;
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ServiceUser {

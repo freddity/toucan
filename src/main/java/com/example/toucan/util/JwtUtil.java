@@ -2,7 +2,6 @@ package com.example.toucan.util;
 
 import com.example.toucan.model.dao.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -77,5 +76,34 @@ public class JwtUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+    }
+
+    /**
+     * This method compares username from token and username from passed {@link UserDetailsImpl} instance.
+     * @param token received JWT
+     * @param userDetails {@link UserDetailsImpl} with data about our user
+     * @return {@code true} when username from token is equal to username from {@link UserDetailsImpl}
+     */
+    public Boolean validateToken(String token, UserDetailsImpl userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+
+    /**
+     * This method takes expiration date from token and compares with actually date.
+     * @param token received JWT
+     * @return {@code true} when token is not expired yet
+     */
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    /**
+     * This method extracts expiration date from passed token.
+     * @param token received JWT
+     * @return expiration {@link Date}
+     */
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 }
