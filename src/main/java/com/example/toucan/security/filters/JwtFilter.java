@@ -6,11 +6,13 @@ import com.example.toucan.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,7 +38,10 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        final String header = request.getHeader("Authorization");
+        String url = request.getRequestURI();
+        System.out.println(url);
+
+        /*final String header = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
@@ -48,23 +53,27 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() != null) {
 
-            UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
+            request.getPathInfo();
+
+            *//*UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authenticationToken
+                        = new UsernamePasswordAuthenticationToken(userDetails, null, )
 
-            }
-        }
-
+            }*//*
+        }*/
+        chain.doFilter(request, response);
     }
 
-    @Override
+    /*@Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
 
         UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(header);
         SecurityContextHolder.getContext().setAuthentication(authResult);
         chain.doFilter(request, response);
-    }
+    }*/
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey("example".getBytes())
