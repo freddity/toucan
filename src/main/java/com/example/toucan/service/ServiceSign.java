@@ -37,14 +37,14 @@ public class ServiceSign {
 
     //todo everything works but canUserBeLogin() works incorrectly
     public String generateToken(DtoUsernamePassword dto) throws NullPointerException {
-        if (canUserBeLogin(dto.getUsername(), dto.getPassword())) {
+        if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
             System.out.println("CAN BE LOGGED");
             return jwtUtil.generateToken(service.loadUserByUsername(dto.getUsername()));
         }
         return null;
     }
 
-    private boolean canUserBeLogin(String username, String password) throws NullPointerException {
+    private boolean canUserBeLogged(String username, String password) throws NullPointerException {
         if (passwordEncoder.matches(repositoryUser.findByUsername(username).getPassword(), password)) return true;
         return false;
     }
