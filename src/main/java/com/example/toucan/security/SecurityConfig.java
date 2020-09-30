@@ -1,6 +1,6 @@
 package com.example.toucan.security;
 
-import com.example.toucan.security.filters.JWTAuthenticationFilter;
+import com.example.toucan.security.filters.FilterSignUp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImpl userDetailsService;
-    private JWTAuthenticationFilter jwtFilter;
+    /*private FilterSignUp jwtFilter;*/
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JWTAuthenticationFilter jwtFilter) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService/*, FilterSignUp jwtFilter*/) {
         this.userDetailsService = userDetailsService;
-        this.jwtFilter = jwtFilter;
+        /*this.jwtFilter = jwtFilter;*/
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

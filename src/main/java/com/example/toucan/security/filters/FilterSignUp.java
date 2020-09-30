@@ -24,14 +24,14 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-@Component
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+//@Component
+public class FilterSignUp /*extends UsernamePasswordAuthenticationFilter*/ {
 
-    private UserDetailsServiceImpl userDetailsService;
+    /*private UserDetailsServiceImpl userDetailsService;
     private JwtUtil jwtUtil;
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+    public FilterSignUp(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
 
@@ -92,7 +92,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String url = request.getRequestURI();
         System.out.println(url);
 
-        /*final String header = request.getHeader("Authorization");
+        *//*final String header = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
@@ -106,35 +106,35 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             request.getPathInfo();
 
-            *//*UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
+            *//**//*UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken
                         = new UsernamePasswordAuthenticationToken(userDetails, null, )
 
-            }*//*
-        }*/
+            }*//**//*
+        }*//*
         chain.doFilter(request, response);
     }
 
-    /*@Override
+    *//*@Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
 
         UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(header);
         SecurityContextHolder.getContext().setAuthentication(authResult);
         chain.doFilter(request, response);
-    }*/
+    }*//*
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey("example".getBytes())
                 .parseClaimsJws(header.replace("Bearer ", ""));
 
-        String username = claimsJws.getBody().get("" /*todo USERNAME*/).toString();
+        String username = claimsJws.getBody().get("" *//*todo USERNAME*//*).toString();
 
-        String role = claimsJws.getBody().get("" /*todo role of user, make orum or something*/).toString();
+        String role = claimsJws.getBody().get("" *//*todo role of user, make orum or something*//*).toString();
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(role));
 
-        return new UsernamePasswordAuthenticationToken(username, null /*todo any password?*/, simpleGrantedAuthorities);
-    }
+        return new UsernamePasswordAuthenticationToken(username, null *//*todo any password?*//*, simpleGrantedAuthorities);
+    }*/
 }
