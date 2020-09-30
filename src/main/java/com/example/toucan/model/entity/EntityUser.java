@@ -10,12 +10,14 @@ import java.util.*;
 @Table(name = "USERS")
 public class EntityUser {
 
+    private final String DEF_ROLE = "ROLE_USER";
+
     public EntityUser(){}
 
-    public EntityUser(String username, String password, String role){
+    public EntityUser(String username, String password){
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = DEF_ROLE;
     }
 
     @Id

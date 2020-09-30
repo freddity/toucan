@@ -1,6 +1,7 @@
 package com.example.toucan.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("toucan/test")
+@RequestMapping("/toucan/user")
 public class ControllerForTests {
 
     private final ServiceUserForTest serviceUserForTest;
@@ -19,6 +20,7 @@ public class ControllerForTests {
     }
 
     @GetMapping("/getallusers")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List getAllUsers() {
         return serviceUserForTest.getAllEntityUsers();
     }

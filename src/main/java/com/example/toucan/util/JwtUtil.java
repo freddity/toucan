@@ -22,6 +22,7 @@ public class JwtUtil {
      * Secret key for decode jwt.
      */
     private final String SECRET_KEY = "secret"; //todo change this later
+    private final int EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     /**
      * This method extracts username from received JWT.
@@ -54,12 +55,13 @@ public class JwtUtil {
     }
 
     /**
-     * This method provides token using {@link #createToken(Map, String)}.
+     * This method provides token using {@link #createToken(Map, String)} and add claims to {@link Map}.
      * @param userDetails user, for which token will be generated
      * @return JWT in {@link String}
      */
     public String generateToken(UserDetailsImpl userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", userDetails.getAuthorities());
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -74,7 +76,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

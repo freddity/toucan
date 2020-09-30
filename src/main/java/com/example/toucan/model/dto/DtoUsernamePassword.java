@@ -1,10 +1,13 @@
 package com.example.toucan.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Collection;
 
-public class DtoUserSignUp implements Serializable {
+public class DtoUsernamePassword implements Serializable {
 
     @NotBlank
     private final String username;
@@ -12,17 +15,11 @@ public class DtoUserSignUp implements Serializable {
     @NotBlank
     private final String password;
 
-    @NotBlank
-    private final String role;
-
-    public DtoUserSignUp(@JsonProperty("username") String username,
-                         @JsonProperty("password") String password,
-                         @JsonProperty("role") String role) {
+    public DtoUsernamePassword(@JsonProperty("username") String username,
+                               @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
-        this.role = role;
     }
-
 
     public String getUsername() {
         return username;
@@ -30,9 +27,5 @@ public class DtoUserSignUp implements Serializable {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getRole() {
-        return role;
     }
 }
