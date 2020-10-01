@@ -45,7 +45,11 @@ public class ServiceSign {
     }
 
     private boolean canUserBeLogged(String username, String password) throws NullPointerException {
-        if (passwordEncoder.matches(repositoryUser.findByUsername(username).getPassword(), password)) return true;
+        //System.out.println(repositoryUser.findByUsername(username).getPassword());
+        //System.out.println(passwordEncoder.encode(password));
+        if (passwordEncoder.matches(password, repositoryUser.findByUsername(username).getPassword())) {
+            return true;
+        }
         return false;
     }
 }

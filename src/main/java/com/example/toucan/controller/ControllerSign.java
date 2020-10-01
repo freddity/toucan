@@ -40,7 +40,7 @@ public class ControllerSign {
         try {
             return serviceSign.generateToken(dtoUsernamePassword);
         } catch (NullPointerException e) {
-            throw new NullPointerException(e.getMessage());
+            throw new RuntimeException(e + " | cannot generate token");
         }
     }
 }
