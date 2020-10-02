@@ -28,14 +28,14 @@ public class ServiceSign {
         this.jwtUtil = jwtUtil;
     }
 
-    public EntityUser createUser(String username, String password) throws UsernameNotFoundException { //todo bad error class, make new
+    //todo bad error class, make new
+    public EntityUser createUser(String username, String password) throws UsernameNotFoundException {
         if (repositoryUser.findByUsername(username) == null) {
             return repositoryUser.save(new EntityUser(username, passwordEncoder.encode(password)));
         }
         throw new UsernameNotFoundException(username);
     }
 
-    //todo everything works but canUserBeLogin() works incorrectly
     public String generateToken(DtoUsernamePassword dto) throws NullPointerException {
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
             System.out.println("CAN BE LOGGED");

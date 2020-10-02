@@ -16,7 +16,6 @@ public class ControllerSign {
 
     private final ServiceSign serviceSign;
 
-    @Autowired
     public ControllerSign(ServiceSign serviceSign) {
         this.serviceSign = serviceSign;
     }
@@ -24,18 +23,17 @@ public class ControllerSign {
     @PostMapping("/signup")
     @PreAuthorize("permitAll()")
     public void signUp(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword){
-        //todo make validation and information user about errors system
-        serviceSign.createUser(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
 
-        System.out.println("SIGNUP");
+        //todo make validation and information user about errors system
+
+        serviceSign.createUser(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
     }
 
     @GetMapping("/signin")
     @PreAuthorize("permitAll()")
     public String signIn(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
-        //todo make validation and information user about errors system
 
-        System.out.println("SIGNIN");
+        //todo make validation and information user about errors system
 
         try {
             return serviceSign.generateToken(dtoUsernamePassword);
