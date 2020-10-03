@@ -30,6 +30,7 @@ public class ServiceSign {
 
     //todo bad error class, make new
     public EntityUser createUser(String username, String password) throws UsernameNotFoundException {
+
         if (repositoryUser.findByUsername(username) == null) {
             return repositoryUser.save(new EntityUser(username, passwordEncoder.encode(password)));
         }
@@ -37,16 +38,15 @@ public class ServiceSign {
     }
 
     public String generateToken(DtoUsernamePassword dto) throws NullPointerException {
+
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
-            System.out.println("CAN BE LOGGED");
             return jwtUtil.generateToken(service.loadUserByUsername(dto.getUsername()));
         }
         return null;
     }
 
     private boolean canUserBeLogged(String username, String password) throws NullPointerException {
-        //System.out.println(repositoryUser.findByUsername(username).getPassword());
-        //System.out.println(passwordEncoder.encode(password));
+
         if (passwordEncoder.matches(password, repositoryUser.findByUsername(username).getPassword())) {
             return true;
         }

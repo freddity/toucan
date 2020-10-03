@@ -1,6 +1,7 @@
 package com.example.toucan.security;
 
-import com.example.toucan.security.filters.FilterSignUp;
+import com.example.toucan.security.filters.FilterSelfProfileActions;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImpl userDetailsService;
-    /*private FilterSignUp jwtFilter;*/
+    //private FilterSignUp filterSignUp;
 
     public SecurityConfig(UserDetailsServiceImpl userDetailsService/*, FilterSignUp jwtFilter*/) {
         this.userDetailsService = userDetailsService;
-        /*this.jwtFilter = jwtFilter;*/
+        /*this.filterSignUp = jwtFilter;*/
     }
 
     @Override
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
 
-        //http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(filterSignUp, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -50,4 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+    /*@Bean
+    public FilterRegistrationBean<FilterSelfProfileActions> filterRegistrationBean() {
+
+        FilterRegistrationBean<FilterSelfProfileActions> registrationBean = new FilterRegistrationBean<>();
+        FilterSelfProfileActions filter = new FilterSelfProfileActions();
+
+        registrationBean.setFilter(filter);
+        registrationBean.addUrlPatterns("/toucan/user/**");
+        return registrationBean;
+    }*/
 }

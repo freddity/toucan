@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 public class ServiceUser {
 
     public void resetPassword(String email) {
-        //mechanizm resetu z tabelą aktywnych zmian hasła z datą wygaśnięcia
+        System.out.println("### PASSWORD RESET ###");
     }
 }

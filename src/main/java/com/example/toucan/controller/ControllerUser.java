@@ -17,9 +17,8 @@ public class ControllerUser {
     }
 
     @PutMapping("/resetpassword")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public void resetPassword(String email) {
-        //todo create change password mechanism
         serviceUser.resetPassword(email);
     }
 }

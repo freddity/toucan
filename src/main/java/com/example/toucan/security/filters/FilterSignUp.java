@@ -8,11 +8,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -24,16 +27,16 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-//@Component
-public class FilterSignUp /*extends UsernamePasswordAuthenticationFilter*/ {
+/*@Component
+public class FilterSignUp extends UsernamePasswordAuthenticationFilter {
 
-    /*private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
     private JwtUtil jwtUtil;
     private AuthenticationManager authenticationManager;
 
-    public FilterSignUp(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+    public FilterSignUp(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
+        this.jwtUtil = new JwtUtil();
 
         setFilterProcessesUrl("/toucan/auth/signup");
     }
@@ -87,12 +90,12 @@ public class FilterSignUp /*extends UsernamePasswordAuthenticationFilter*/ {
         this.authenticationManager = authenticationManager;
     }
 
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    *//*protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String url = request.getRequestURI();
         System.out.println(url);
 
-        *//*final String header = request.getHeader("Authorization");
+        final String header = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
@@ -106,16 +109,16 @@ public class FilterSignUp /*extends UsernamePasswordAuthenticationFilter*/ {
 
             request.getPathInfo();
 
-            *//**//*UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
+            UserDetailsImpl userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken
-                        = new UsernamePasswordAuthenticationToken(userDetails, null, )
+                        = new UsernamePasswordAuthenticationToken(userDetails, null);
 
-            }*//**//*
-        }*//*
+            }
+        }
         chain.doFilter(request, response);
-    }
+    }*//*
 
     *//*@Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -126,15 +129,15 @@ public class FilterSignUp /*extends UsernamePasswordAuthenticationFilter*/ {
         chain.doFilter(request, response);
     }*//*
 
-    private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
+    *//*private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey("example".getBytes())
                 .parseClaimsJws(header.replace("Bearer ", ""));
 
-        String username = claimsJws.getBody().get("" *//*todo USERNAME*//*).toString();
+        String username = claimsJws.getBody().get("" *//**//*todo USERNAME*//**//*).toString();
 
-        String role = claimsJws.getBody().get("" *//*todo role of user, make orum or something*//*).toString();
+        String role = claimsJws.getBody().get("" *//**//*todo role of user, make orum or something*//**//*).toString();
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(role));
 
-        return new UsernamePasswordAuthenticationToken(username, null *//*todo any password?*//*, simpleGrantedAuthorities);
-    }*/
-}
+        return new UsernamePasswordAuthenticationToken(username, null , simpleGrantedAuthorities);
+    }*//*
+}*/
