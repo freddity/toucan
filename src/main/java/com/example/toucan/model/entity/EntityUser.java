@@ -33,6 +33,10 @@ public class EntityUser {
     @Column(name = "role", nullable = false)
     private String role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "password_reset_token", referencedColumnName = "uuid_password_reset")
+    private EntityPasswordReset passwordResetToken;
+
     @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EntityNote> noteList = new ArrayList<>();
 

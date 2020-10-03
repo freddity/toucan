@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "passreset")
+@Table(name = "password_reset")
 public class EntityPasswordReset {
 
     public EntityPasswordReset() {}
@@ -16,14 +16,14 @@ public class EntityPasswordReset {
     }
 
     @Id
-    @Column(name = "uuid_passreset", length = 16, unique = true, nullable = false)
+    @Column(name = "uuid_password_reset", length = 16, unique = true, nullable = false)
     private UUID uuid = UUID.randomUUID();
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
-    @OneToOne(targetEntity = EntityUser.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "uuid_user")
+    @OneToOne(mappedBy = "passwordResetToken", targetEntity = EntityUser.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private EntityUser owner;
 
     @Column(name = "expiry_date", nullable = false)

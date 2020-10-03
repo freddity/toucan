@@ -1,5 +1,6 @@
 package com.example.toucan.repository;
 
+import com.example.toucan.model.entity.EntityPasswordReset;
 import com.example.toucan.model.entity.EntityUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface RepositoryUser extends JpaRepository<EntityUser, UUID> {
+public interface RepositoryPasswordReset extends JpaRepository<EntityPasswordReset, UUID> {
 
-    EntityUser findByUsername(String username);
-    EntityUser save(EntityUser entityUser);
+    EntityPasswordReset findEntityPasswordResetByOwner(EntityUser owner);
 }
