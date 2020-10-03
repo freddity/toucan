@@ -18,8 +18,8 @@ public class ControllerUser {
 
     @PutMapping("/resetpassword")
     @PreAuthorize("permitAll()")
-    public void changePassword(String email) {
+    public void resetPassword(String email) {
         //todo create change password mechanism
-        serviceUser.changePassword(email);
+        serviceUser.resetPassword(email);
     }
 }

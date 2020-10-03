@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class EntityUser {
 
     private final String DEF_ROLE = "ROLE_USER";
