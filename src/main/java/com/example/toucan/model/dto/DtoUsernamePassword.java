@@ -15,8 +15,8 @@ public class DtoUsernamePassword implements Serializable {
     @NotBlank
     private final String password;
 
-    public DtoUsernamePassword(@JsonProperty("username") String username,
-                               @JsonProperty("password") String password) {
+    public DtoUsernamePassword(@JsonProperty("username") @NotBlank String username,
+                               @JsonProperty("password") @NotBlank String password) {
         this.username = username;
         this.password = password;
     }

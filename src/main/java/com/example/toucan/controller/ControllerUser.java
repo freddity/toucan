@@ -1,10 +1,12 @@
 package com.example.toucan.controller;
 
+import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.service.ServiceUser;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/toucan/user")
@@ -17,8 +19,9 @@ public class ControllerUser {
     }
 
     @PutMapping("/resetpassword")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public void resetPassword(String email) {
-        serviceUser.resetPassword(email);
+    //@PreAuthorize("hasRole('ROLE_USER')")
+    public void resetPassword(@RequestHeader(name="Authorization") String token,
+            @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
+        serviceUser.resetPasswordProvider(dtoResetPassword);
     }
 }
