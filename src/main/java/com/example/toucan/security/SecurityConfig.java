@@ -13,27 +13,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceImpl userDetailsService;
-    //private FilterSignUp filterSignUp;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService/*, FilterSignUp jwtFilter*/) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
-        /*this.filterSignUp = jwtFilter;*/
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-
-
-        //http.addFilterBefore(filterSignUp, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -52,14 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /*@Bean
+    @Bean
     public FilterRegistrationBean<FilterSelfProfileActions> filterRegistrationBean() {
 
         FilterRegistrationBean<FilterSelfProfileActions> registrationBean = new FilterRegistrationBean<>();
-        FilterSelfProfileActions filter = new FilterSelfProfileActions();
+        FilterSelfProfileActions filter = new FilterSelfProfileActions(userDetailsService);
 
         registrationBean.setFilter(filter);
-        registrationBean.addUrlPatterns("/toucan/user/**");
+        registrationBean.addUrlPatterns("/toucan/user/resetpassword");
         return registrationBean;
-    }*/
+    }
 }

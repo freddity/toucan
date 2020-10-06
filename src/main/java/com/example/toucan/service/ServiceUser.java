@@ -30,13 +30,11 @@ public class ServiceUser {
     }
 
     /**
-     *
+     * It is bridge between {@link com.example.toucan.controller.ControllerUser} and this service.
      * @param dtoResetPassword
      */
-    public void resetPasswordProvider(DtoResetPassword dtoResetPassword) {
-        resetPassword(dtoResetPassword.getOldPassword(),
-                dtoResetPassword.getNewPassword(),
-                dtoResetPassword.getNewPasswordRe());
+    public void resetPasswordProvider(String token, DtoResetPassword dtoResetPassword) {
+
     }
 
     private void resetPassword(String oldPassword, String newPassword, String newPasswordRe) {

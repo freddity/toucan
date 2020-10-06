@@ -21,7 +21,7 @@ public class JwtUtil {
     /**
      * Secret key for decode jwt.
      */
-    private final String SECRET_KEY = "secret"; //todo change this later
+    private final static String SECRET_KEY = "secret"; //todo change this later
     private final int EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     /**
@@ -29,7 +29,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return @see claim specified in second argument of {@link #extractClaim(String, Function)}
      */
-    public String extractUsername(String token) {
+    public static String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -40,7 +40,7 @@ public class JwtUtil {
      * @param <T> used method from {@link Claims}
      * @return work effect of method passed in {@code claimsResolver}
      */
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    private static <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -50,7 +50,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return decoded claims
      */
-    private Claims extractAllClaims(String token) {
+    private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
@@ -86,7 +86,7 @@ public class JwtUtil {
      * @param userDetails {@link UserDetailsImpl} with data about our user
      * @return {@code true} when username from token is equal to username from {@link UserDetailsImpl}
      */
-    public Boolean validateToken(String token, UserDetailsImpl userDetails) {
+    public static Boolean validateToken(String token, UserDetailsImpl userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
@@ -96,7 +96,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return {@code true} when token is not expired yet
      */
-    private Boolean isTokenExpired(String token) {
+    private static Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -105,7 +105,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return expiration {@link Date}
      */
-    private Date extractExpiration(String token) {
+    private static Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 }
