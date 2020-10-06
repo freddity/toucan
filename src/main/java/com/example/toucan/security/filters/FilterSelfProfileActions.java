@@ -15,30 +15,20 @@ import java.util.Enumeration;
 @Component
 public class FilterSelfProfileActions extends OncePerRequestFilter {
 
+    private final String HEADER = "authorization";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        System.out.println("### FILTER ###");
 
-        Enumeration<String> headerNames = request.getHeaderNames();
+        Enumeration<String> headers = request.getHeaderNames();
+        if (headers == null) return;
 
-        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                if (headerNames.nextElement().matches("Bearer")) {
-                    System.out.println("### Bearer found ###");
-                }
+        while (headers.hasMoreElements()) {
+            String header = headers.nextElement();
+            if (header.equals(HEADER) && request.getHeader(HEADER).startsWith("Bearer")) {
+                System.out.println("Header: " + header + " value:" + request.getHeader(header));
             }
         }
-        System.out.println("2222");
-
-        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                System.out.println("Header: " + name + " value:" + request.getHeader(name));
-            }
-        }
-
-
-        System.out.println("33333");
 
 
 
