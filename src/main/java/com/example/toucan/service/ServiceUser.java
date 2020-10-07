@@ -7,6 +7,8 @@ import com.example.toucan.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.example.toucan.util.JwtUtil.extractUsername;
 
 @Service
@@ -51,7 +53,7 @@ public class ServiceUser {
         if (oldPassword.equals(service.loadUserByUsername(extractUsername(token)).getPassword())
                 && newPassword.equals(newPasswordRe)) {
 
-            repositoryUser.findByUsername(extractUsername(token)).setPassword(newPassword);
+            repositoryUser.changePassword(extractUsername(token), newPassword);
         }
     }
 }
