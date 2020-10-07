@@ -7,6 +7,8 @@ import com.example.toucan.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.example.toucan.util.JwtUtil.extractUsername;
+
 @Service
 public class ServiceUser {
 
@@ -31,15 +33,25 @@ public class ServiceUser {
 
     /**
      * It is bridge between {@link com.example.toucan.controller.ControllerUser} and this service.
-     * @param dtoResetPassword
+     * I've used {@code token.substring(7)} because ons start of token is {@code "Bearer "}, which must be deleted.
+     * @param dto {@link DtoResetPassword} which contains old pass, new pass and repeated new password.
      */
-    public void resetPasswordProvider(String token, DtoResetPassword dtoResetPassword) {
-
+    public void resetPasswordProvider(String token, DtoResetPassword dto) {
+        resetPassword(token.substring(7), dto.getOldPassword(), dto.getNewPassword(), dto.getNewPasswordRe());
     }
 
-    private void resetPassword(String oldPassword, String newPassword, String newPasswordRe) {
-        System.out.println("### PASSWORD RESET ###");
+    /**
+     * Proper change password method.
+     * @param token
+     * @param oldPassword
+     * @param newPassword
+     * @param newPasswordRe
+     */
+    private void resetPassword(String token, String oldPassword, String newPassword, String newPasswordRe) {
+        if (oldPassword.equals(service.loadUserByUsername(extractUsername(token)).getPassword())
+                && newPassword.equals(newPasswordRe)) {
 
-        //if (newPassword.equals(newPasswordRe) && oldPassword.equals())
+            repositoryUser.findByUsername(extractUsername(token)).setPassword(newPassword);
+        }
     }
 }
