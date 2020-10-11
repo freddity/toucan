@@ -19,9 +19,11 @@ public class ControllerUser {
     }
 
     @PutMapping("/resetpassword")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     public void resetPassword(@RequestHeader(name="Authorization") String token,
             @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
         serviceUser.resetPasswordProvider(token, dtoResetPassword);
     }
+
+
 }

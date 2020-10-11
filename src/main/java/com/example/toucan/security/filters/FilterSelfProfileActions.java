@@ -1,15 +1,10 @@
 package com.example.toucan.security.filters;
 
-import com.example.toucan.model.dao.UserDetailsImpl;
 import com.example.toucan.security.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,7 +23,6 @@ import static com.example.toucan.util.JwtUtil.validateToken;
 public class FilterSelfProfileActions extends OncePerRequestFilter {
 
     private final String AUTHORIZATION = "authorization";
-    private final String BEARER = "Bearer";
 
     private final UserDetailsServiceImpl detailsService;
     private final JwtUtil jwtUtil;
@@ -47,12 +41,18 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
 
         System.out.println(token);
 
-        if (validateToken(token, detailsService.loadUserByUsername(extractUsername(token)))) {
-            UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
-            SecurityContextHolder.getContext().setAuthentication(authResult);
-            chain.doFilter(request, response);
+        try {
+            if (validateToken(token, detailsService.loadUserByUsername(extractUsername(token)))) {
+                UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
+                SecurityContextHolder.getContext().setAuthentication(authResult);
+                chain.doFilter(request, response);
+            }
+        } catch (SignatureException e) {
+            System.out.println("FilterSelfProfileActions.doFilterInternal() wrong token signature");
         }
     }
+
+
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
 

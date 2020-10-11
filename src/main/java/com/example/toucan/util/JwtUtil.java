@@ -4,6 +4,7 @@ import com.example.toucan.model.dao.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -50,7 +51,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return decoded claims
      */
-    private static Claims extractAllClaims(String token) {
+    private static Claims extractAllClaims(String token) throws NullPointerException {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
