@@ -6,6 +6,7 @@ import com.example.toucan.security.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -54,6 +55,18 @@ public class ServiceUser {
                 && newPassword.equals(newPasswordRe)) {
 
             repositoryUser.changePassword(extractUsername(token), newPassword);
+        }
+        //todo implement here validation system and responses when error occurred
+    }
+
+    /**
+     * This method is called when user want to delete own account.
+     * @param token JWT Token passed by user through http request
+     */
+    public void deleteAccount(String token) {
+        token = token.substring(7);
+        if (repositoryUser.findByUsername(extractUsername(token)) != null) {
+            repositoryUser.deleteByUsername(extractUsername(token));
         }
     }
 }

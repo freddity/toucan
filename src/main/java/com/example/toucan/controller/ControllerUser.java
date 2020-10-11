@@ -25,5 +25,9 @@ public class ControllerUser {
         serviceUser.resetPasswordProvider(token, dtoResetPassword);
     }
 
-
+    @DeleteMapping("/delete")
+    @PreAuthorize("isAuthenticated()")
+    public void deleteAccount(@RequestHeader(name="Authorization") String token) {
+        serviceUser.deleteAccount(token);
+    }
 }
