@@ -25,4 +25,10 @@ public interface RepositoryUser extends JpaRepository<EntityUser, UUID> {
     @Query("UPDATE EntityUser u SET u.password = :password WHERE u.username = :username")
     void changePassword(@Param("username") String username,
                         @Param("password") String newHashedPassword);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE EntityUser u SET u.lockStatus = :status WHERE u.username = :username")
+    void setLockStatus(@Param("username") String username,
+                       @Param("status") boolean status);
 }

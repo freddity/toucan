@@ -2,12 +2,14 @@ package com.example.toucan.security.filters;
 
 import com.example.toucan.security.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import java.util.*;
 
 import static com.example.toucan.util.JwtUtil.extractUsername;
 import static com.example.toucan.util.JwtUtil.validateToken;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class FilterSelfProfileActions extends OncePerRequestFilter {
@@ -48,7 +51,9 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
                 chain.doFilter(request, response);
             }
         } catch (SignatureException e) {
-            System.out.println("FilterSelfProfileActions.doFilterInternal() wrong token signature");
+            throw new ResponseStatusException(BAD_REQUEST, "token signature is wrong");
+        } catch (ExpiredJwtException e) {
+            throw new ResponseStatusException(BAD_REQUEST, "token has expired");
         }
     }
 

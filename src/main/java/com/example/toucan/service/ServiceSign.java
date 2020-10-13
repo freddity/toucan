@@ -46,14 +46,16 @@ public class ServiceSign {
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
             return jwtUtil.generateToken(detailsService.loadUserByUsername(dto.getUsername()));
         }
-        //todo I've found the way to throw error to client
         throw new ResponseStatusException(FORBIDDEN, "username or password are incorrectly");
     }
 
-    //todo make checking if user does exists and other conditions
-    //TODO CHANGE USERNAME TO EMAIL EVERYWHERE
     private boolean canUserBeLogged(String username, String password) throws NullPointerException {
         return detailsService.loadUserByUsername(username) != null
-                && detailsService.loadUserByUsername(username).getPassword().equals(password);
+                && detailsService.loadUserByUsername(username).getPassword().equals(password)
+                && detailsService.loadUserByUsername(username).isAccountNonLocked();
     }
 }
+
+
+
+//TODO CHANGE USERNAME TO EMAIL EVERYWHERE

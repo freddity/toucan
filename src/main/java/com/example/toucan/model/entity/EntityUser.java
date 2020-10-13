@@ -11,6 +11,7 @@ import java.util.*;
 public class EntityUser {
 
     private final String DEF_ROLE = "ROLE_USER";
+    private final boolean DEF_LOCK_STATUS = false;
 
     public EntityUser(){}
 
@@ -18,6 +19,7 @@ public class EntityUser {
         this.username = username;
         this.password = password;
         this.role = DEF_ROLE;
+        this.lockStatus = DEF_LOCK_STATUS;
     }
 
     @Id
@@ -33,6 +35,9 @@ public class EntityUser {
     @Column(name = "role", nullable = false)
     private String role;
 
+    @Column(name = "lock_status", nullable = false)
+    private boolean lockStatus;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "password_reset_token", referencedColumnName = "uuid_password_reset")
     private EntityPasswordReset passwordResetToken;
@@ -40,25 +45,28 @@ public class EntityUser {
     @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EntityNote> noteList = new ArrayList<>();
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
-    }
-
-
-    public String getPassword() {
-        return password;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public String getPassword() {
+        return password;
     }
 
     public String getRole() {
         return role;
+    }
+
+    public boolean isLocked() {
+        return lockStatus;
+    }
+
+    public EntityPasswordReset getPasswordResetToken() {
+        return passwordResetToken;
     }
 
     public List<EntityNote> getNoteList() {
@@ -76,6 +84,10 @@ public class EntityUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setLockStatus(boolean lockStatus) {
+        this.lockStatus = lockStatus;
     }
 
     public void setPasswordResetToken(EntityPasswordReset passwordResetToken) {

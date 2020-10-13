@@ -7,11 +7,11 @@ import com.example.toucan.security.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 import static com.example.toucan.util.JwtUtil.extractUsername;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service
 public class ServiceUser {
@@ -53,23 +53,25 @@ public class ServiceUser {
      */
     private void resetPassword(String token, String oldPassword, String newPassword, String newPasswordRe) {
         if (oldPassword.equals(service.loadUserByUsername(extractUsername(token)).getPassword())
+                && service.loadUserByUsername(extractUsername(token)).isAccountNonLocked()
                 && newPassword.equals(newPasswordRe)) {
 
-            repositoryUser.changePassword(extractUsername(token), newPassword);
+            repositoryUser.changePassword(extractUsername(token), newPassword); return;
         }
-        //todo implement here validation system and responses when error occurred
+        throw new ResponseStatusException(FORBIDDEN, "possible causes: passwords are wrong, account is locked");
     }
 
     /**
      * This method is called when user want to delete own account.
+     * Default lockStatus in {@link com.example.toucan.model.entity.EntityUser} is {@code false}
      * @param token JWT Token passed by user through http request
      */
     public void deleteAccount(String token, DtoPassword dtoPassword) {
         token = token.substring(7);
         if (service.loadUserByUsername(extractUsername(token)).getPassword().equals(dtoPassword.getPassword())) {
-            if (repositoryUser.findByUsername(extractUsername(token)) != null) {
-                repositoryUser.deleteByUsername(extractUsername(token));
-            }
+            repositoryUser.setLockStatus(extractUsername(token), true);
+        } else {
+            throw new ResponseStatusException(FORBIDDEN, "possible causes: wrong password");
         }
     }
 }

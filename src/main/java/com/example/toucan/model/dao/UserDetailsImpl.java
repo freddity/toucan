@@ -12,19 +12,15 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private String authorities;
+    private boolean lockStatus;
 
     public UserDetailsImpl() {}
 
-    public UserDetailsImpl(String username, String password, String authorities) {
+    public UserDetailsImpl(String username, String password, String authorities, boolean lockStatus) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("AUTHORITIES: " + authorities);
-        return Collections.singleton(new SimpleGrantedAuthority(authorities));
+        this.lockStatus = lockStatus;
     }
 
     @Override
@@ -38,13 +34,21 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(authorities));
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * @return {@code !lockStatus}, negation operator is required, because in EntityUser {@code lockStatus} is false default.
+     */
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !lockStatus;
     }
 
     @Override

@@ -21,6 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         EntityUser entityUser = repositoryUser.findByUsername(username);
         if(entityUser == null) throw new UsernameNotFoundException(username);
 
-        return new UserDetailsImpl(entityUser.getUsername(), entityUser.getPassword(), entityUser.getRole());
+        return new UserDetailsImpl
+                (entityUser.getUsername(), entityUser.getPassword(), entityUser.getRole(), entityUser.isLocked());
     }
 }
