@@ -1,5 +1,6 @@
 package com.example.toucan.service;
 
+import com.example.toucan.model.dto.DtoPassword;
 import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.repository.RepositoryUser;
 import com.example.toucan.security.UserDetailsServiceImpl;
@@ -63,10 +64,12 @@ public class ServiceUser {
      * This method is called when user want to delete own account.
      * @param token JWT Token passed by user through http request
      */
-    public void deleteAccount(String token) {
+    public void deleteAccount(String token, DtoPassword dtoPassword) {
         token = token.substring(7);
-        if (repositoryUser.findByUsername(extractUsername(token)) != null) {
-            repositoryUser.deleteByUsername(extractUsername(token));
+        if (service.loadUserByUsername(extractUsername(token)).getPassword().equals(dtoPassword.getPassword())) {
+            if (repositoryUser.findByUsername(extractUsername(token)) != null) {
+                repositoryUser.deleteByUsername(extractUsername(token));
+            }
         }
     }
 }

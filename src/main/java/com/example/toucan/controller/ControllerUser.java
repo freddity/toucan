@@ -1,5 +1,6 @@
 package com.example.toucan.controller;
 
+import com.example.toucan.model.dto.DtoPassword;
 import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.service.ServiceUser;
 import org.springframework.lang.NonNull;
@@ -27,7 +28,7 @@ public class ControllerUser {
 
     @DeleteMapping("/delete")
     @PreAuthorize("isAuthenticated()")
-    public void deleteAccount(@RequestHeader(name="Authorization") String token) {
-        serviceUser.deleteAccount(token);
+    public void deleteAccount(@RequestHeader(name="Authorization") String token, @RequestBody DtoPassword dtoPassword) {
+        serviceUser.deleteAccount(token, dtoPassword);
     }
 }
