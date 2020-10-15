@@ -11,10 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service
@@ -32,27 +34,29 @@ public class ServiceSign {
         this.jwtUtil = jwtUtil;
     }
 
-    //todo bad error class, make new
     public EntityUser createUser(String username, String password) throws UsernameNotFoundException {
 
         if (repositoryUser.findByUsername(username) == null) {
             return repositoryUser.save(new EntityUser(username, password));
         }
-        throw new UsernameNotFoundException(username);
+        throw new ResponseStatusException(CONFLICT, "possible causes: username is already taken");
     }
 
-    public String generateToken(DtoUsernamePassword dto) throws NullPointerException {
-
+    public String generateToken(DtoUsernamePassword dto) {
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
             return jwtUtil.generateToken(detailsService.loadUserByUsername(dto.getUsername()));
+        } else {
+            throw new ResponseStatusException(FORBIDDEN, "possible causes: username or password are incorrect, account is deleted, account doesn't exist");
         }
-        throw new ResponseStatusException(FORBIDDEN, "username or password are incorrectly");
     }
 
     private boolean canUserBeLogged(String username, String password) throws NullPointerException {
-        return detailsService.loadUserByUsername(username) != null
-                && detailsService.loadUserByUsername(username).getPassword().equals(password)
-                && detailsService.loadUserByUsername(username).isAccountNonLocked();
+        try {
+            return detailsService.loadUserByUsername(username).getPassword().equals(password)
+                    && detailsService.loadUserByUsername(username).isAccountNonLocked();
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 }
 

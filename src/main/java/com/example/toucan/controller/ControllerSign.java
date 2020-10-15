@@ -32,13 +32,6 @@ public class ControllerSign {
     @GetMapping("/signin")
     @PreAuthorize("permitAll()")
     public String signIn(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
-
-        //todo make validation and information user about errors system
-
-        try {
-            return serviceSign.generateToken(dtoUsernamePassword);
-        } catch (NullPointerException e) {
-            throw new RuntimeException(e + " | cannot generate token");
-        }
+        return serviceSign.generateToken(dtoUsernamePassword);
     }
 }

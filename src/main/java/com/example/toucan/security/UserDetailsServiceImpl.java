@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private RepositoryUser repositoryUser;
+    private final RepositoryUser repositoryUser;
 
     public UserDetailsServiceImpl(RepositoryUser repositoryUser) {
         this.repositoryUser = repositoryUser;
     }
 
     @Override
-    public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetailsImpl loadUserByUsername(String username) {
         EntityUser entityUser = repositoryUser.findByUsername(username);
-        if(entityUser == null) throw new UsernameNotFoundException(username);
+        if(entityUser == null) throw new NullPointerException();
 
         return new UserDetailsImpl
                 (entityUser.getUsername(), entityUser.getPassword(), entityUser.getRole(), entityUser.isLocked());

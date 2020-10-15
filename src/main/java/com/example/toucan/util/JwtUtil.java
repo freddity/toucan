@@ -22,7 +22,7 @@ public class JwtUtil {
     /**
      * Secret key for decode jwt.
      */
-    private final static String SECRET_KEY = "secret"; //todo change this later
+    private final static String SECRET_KEY = "4sm$0dJHEJDX!EIedl4PfPvr6pRa5gj4Gdl)ySmX%T1f$yJdiMipe0x0txa%X(H^8B585NcKB6ZUX7F0l99bV&Yvf$0puL&874Fm\n";
     private final int EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     /**
