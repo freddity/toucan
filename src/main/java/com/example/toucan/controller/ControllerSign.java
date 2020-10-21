@@ -29,7 +29,7 @@ public class ControllerSign {
         serviceSign.createUser(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
     }
 
-    @GetMapping("/signin")
+    @PostMapping("/signin")
     @PreAuthorize("permitAll()")
     public String signIn(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
         return serviceSign.generateToken(dtoUsernamePassword);

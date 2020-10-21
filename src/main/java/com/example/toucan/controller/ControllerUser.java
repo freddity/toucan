@@ -19,7 +19,7 @@ public class ControllerUser {
         this.serviceUser = serviceUser;
     }
 
-    @PutMapping("/resetpassword")
+    @PatchMapping("/resetpassword")
     @PreAuthorize("isAuthenticated()")
     public void resetPassword(@RequestHeader(name="Authorization") String token,
             @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
