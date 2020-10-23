@@ -51,7 +51,7 @@ public class JwtUtil {
      * @param token received JWT
      * @return decoded claims
      */
-    private static Claims extractAllClaims(String token) throws NullPointerException {
+    private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 

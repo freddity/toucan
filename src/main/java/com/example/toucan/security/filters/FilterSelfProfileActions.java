@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,6 +36,8 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
         this.jwtUtil = new JwtUtil();
     }
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
@@ -44,16 +47,10 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
 
         System.out.println(token);
 
-        try {
-            if (validateToken(token, detailsService.loadUserByUsername(extractUsername(token)))) {
-                UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
-                SecurityContextHolder.getContext().setAuthentication(authResult);
-                chain.doFilter(request, response);
-            }
-        } catch (SignatureException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_EXTENDED, "token signature is wrong");
-        } catch (ExpiredJwtException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "token has expired");
+        if (validateToken(token, detailsService.loadUserByUsername(extractUsername(token)))) {
+            UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+            chain.doFilter(request, response);
         }
     }
 
