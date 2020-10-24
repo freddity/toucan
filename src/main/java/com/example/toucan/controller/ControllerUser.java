@@ -20,14 +20,14 @@ public class ControllerUser {
         this.serviceUser = serviceUser;
     }
 
-    @PatchMapping("/resetpassword")
+    @PatchMapping
     @PreAuthorize("isAuthenticated()")
     public void resetPassword(@RequestHeader(name="Authorization") String token,
             @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
         serviceUser.resetPasswordProvider(token, dtoResetPassword);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @PreAuthorize("isAuthenticated()")
     public void deleteAccount(@RequestHeader(name="Authorization") String token, @RequestBody DtoPassword dtoPassword) {
         serviceUser.deleteAccount(token, dtoPassword);
