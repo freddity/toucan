@@ -1,4 +1,4 @@
-package com.example.toucan.model.dao;
+package com.example.toucan.service.userdetails;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

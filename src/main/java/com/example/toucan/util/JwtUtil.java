@@ -1,10 +1,9 @@
 package com.example.toucan.util;
 
-import com.example.toucan.model.dao.UserDetailsImpl;
+import com.example.toucan.service.userdetails.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "NOTES")
+@Table(name = "notes")
 public class EntityNote {
 
     public EntityNote(){}

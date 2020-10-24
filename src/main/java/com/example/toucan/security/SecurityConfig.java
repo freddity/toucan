@@ -1,6 +1,8 @@
 package com.example.toucan.security;
 
 import com.example.toucan.security.filters.FilterSelfProfileActions;
+import com.example.toucan.service.notedetails.NoteDetailsServiceImpl;
+import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -3,18 +3,12 @@ package com.example.toucan.service;
 import com.example.toucan.model.dto.DtoUsernamePassword;
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.security.UserDetailsServiceImpl;
+import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;

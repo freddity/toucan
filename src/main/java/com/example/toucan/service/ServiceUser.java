@@ -3,14 +3,13 @@ package com.example.toucan.service;
 import com.example.toucan.model.dto.DtoPassword;
 import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.security.UserDetailsServiceImpl;
+import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import static com.example.toucan.util.JwtUtil.extractUsername;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service

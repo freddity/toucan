@@ -1,10 +1,8 @@
-package com.example.toucan.security;
+package com.example.toucan.service.userdetails;
 
-import com.example.toucan.model.dao.UserDetailsImpl;
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +19,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         EntityUser entityUser = repositoryUser.findByUsername(username);
         if(entityUser == null) throw new NullPointerException();
 
-        return new UserDetailsImpl
-                (entityUser.getUsername(), entityUser.getPassword(), entityUser.getRole(), entityUser.isLocked());
+        return new UserDetailsImpl(
+                entityUser.getUsername(),
+                entityUser.getPassword(),
+                entityUser.getRole(),
+                entityUser.isLocked());
     }
 }
