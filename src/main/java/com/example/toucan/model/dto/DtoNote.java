@@ -1,7 +1,6 @@
 package com.example.toucan.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -35,6 +34,11 @@ public class DtoNote implements Serializable {
         this.creationTimestamp = creationTimestamp;
         this.ownerUsername = ownerUsername;
     }
+
+    /**
+     * Non-private non-argument constructor only for {@link org.modelmapper.ModelMapper}
+     */
+    public DtoNote() {}
 
     public UUID getUuid() {
         return uuid;
