@@ -24,7 +24,7 @@ public class EntityUser {
 
     @Id
     @Column(name = "uuid_user", length = 16, unique = true, nullable = false)
-    private UUID uuid = UUID.randomUUID();
+    private final UUID uuid = UUID.randomUUID();
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;

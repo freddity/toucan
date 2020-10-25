@@ -17,10 +17,9 @@ public class NoteDetailsServiceImpl implements NoteDetailsService {
     }
 
     @Override
-    public NoteDetails loadNoteByUsername(UUID uuid) throws NoteNotFoundException {
+    public NoteDetailsImpl loadNoteByUUID(UUID uuid) throws NoteNotFoundException {
         EntityNote entityNote = repositoryNote.findByUuid(uuid);
         if (entityNote == null) throw new NullPointerException();
-
         return new NoteDetailsImpl(
                 entityNote.getUuid(),
                 entityNote.getTitle(),

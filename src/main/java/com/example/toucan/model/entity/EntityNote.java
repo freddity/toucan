@@ -31,7 +31,7 @@ public class EntityNote {
     private String creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn()
+    @JoinColumn(name = "owner")
     private EntityUser owner;
 
 

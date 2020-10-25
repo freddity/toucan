@@ -45,10 +45,10 @@ public class ServiceUser {
 
     /**
      * Proper change password method.
-     * @param token
-     * @param oldPassword
-     * @param newPassword
-     * @param newPasswordRe
+     * @param token JWT Token
+     * @param oldPassword actual password
+     * @param newPassword will be set as password if equal to {@code newPasswordRe}
+     * @param newPasswordRe repeated password, mus be same as {@code newPassword}
      */
     private void resetPassword(String token, String oldPassword, String newPassword, String newPasswordRe) {
         if (oldPassword.equals(service.loadUserByUsername(extractUsername(token)).getPassword())

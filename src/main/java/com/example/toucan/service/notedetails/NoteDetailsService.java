@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface NoteDetailsService {
 
-    NoteDetails loadNoteByUsername(UUID uuid) throws NoteNotFoundException;
+    NoteDetails loadNoteByUUID(UUID uuid) throws NoteNotFoundException;
 }
