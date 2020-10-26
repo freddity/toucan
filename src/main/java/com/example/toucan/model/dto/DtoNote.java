@@ -8,21 +8,20 @@ import java.util.UUID;
 
 public class DtoNote implements Serializable {
 
-    @NotBlank
     private UUID uuid;
-
-    @NotBlank
     private String title;
-
-    @NotBlank
     private String content;
-
-    @NotBlank
     private String creationTimestamp;
-
-    @NotBlank
     private String ownerUsername;
 
+    /**
+     * Constructor used to return a note to client
+     * @param uuid
+     * @param title
+     * @param content
+     * @param creationTimestamp
+     * @param ownerUsername
+     */
     public DtoNote(@JsonProperty("uuid") @NotBlank UUID uuid,
                    @JsonProperty("title") @NotBlank String title,
                    @JsonProperty("content") @NotBlank String content,
@@ -33,6 +32,17 @@ public class DtoNote implements Serializable {
         this.content = content;
         this.creationTimestamp = creationTimestamp;
         this.ownerUsername = ownerUsername;
+    }
+
+    /**
+     * Constructor used to create a note
+     * @param title
+     * @param content
+     */
+    public DtoNote(@JsonProperty("title") @NotBlank String title,
+                   @JsonProperty("content") @NotBlank String content) {
+        this.title = title;
+        this.content = content;
     }
 
     /**

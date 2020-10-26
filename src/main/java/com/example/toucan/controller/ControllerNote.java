@@ -1,10 +1,7 @@
 package com.example.toucan.controller;
 
 import com.example.toucan.model.dto.DtoNote;
-import com.example.toucan.model.dto.DtoNoteONLYCREATING;
 import com.example.toucan.service.ServiceNote;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,7 +23,7 @@ public class ControllerNote {
 
     @PostMapping
     public void createNote(@RequestHeader(name="Authorization") String token,
-                           @RequestBody DtoNoteONLYCREATING dtoNote) {
+                           @RequestBody DtoNote dtoNote) {
         serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
     }
 

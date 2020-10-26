@@ -46,5 +46,7 @@ public class ServiceNote {
                         repositoryUser.findByUsername(jwtUtil.extractUsername(token.substring(7)))));
     }
 
+
+
     //todo create filter for ControllerNote
 }
