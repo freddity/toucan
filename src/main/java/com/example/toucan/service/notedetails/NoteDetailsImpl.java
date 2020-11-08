@@ -1,5 +1,7 @@
 package com.example.toucan.service.notedetails;
 
+import com.example.toucan.model.entity.EntityUser;
+
 import java.util.UUID;
 
 public class NoteDetailsImpl implements NoteDetails {
@@ -7,14 +9,14 @@ public class NoteDetailsImpl implements NoteDetails {
     private UUID uuid;
     private String title;
     private String content;
-    private String creationTimestamp;
+    private long creationTimestamp;
     private String ownerUsername;
 
     public NoteDetailsImpl(
             UUID uuid,
             String title,
             String content,
-            String creationTimestamp,
+            long creationTimestamp,
             String ownerUsername) {
         this.uuid = uuid;
         this.title = title;
@@ -39,7 +41,7 @@ public class NoteDetailsImpl implements NoteDetails {
     }
 
     @Override
-    public String getCreationTimestamp() {
+    public long getCreationTimestamp() {
         return creationTimestamp;
     }
 
@@ -47,4 +49,30 @@ public class NoteDetailsImpl implements NoteDetails {
     public String getOwnerUsername() {
         return ownerUsername;
     }
+
+    /***********************************************************************
+     * SETTERS AND CONSTRUCTOR FOR {@link org.modelmapper.ModelMapper}  /***
+    /***/                                                               /***/
+    public NoteDetailsImpl() {}                                         /***/
+                                                                        /***/
+    public void setUuid(String uuid) {                                  /***/
+        this.uuid = UUID.fromString(uuid);                              /***/
+    }                                                                   /***/
+                                                                        /***/
+    public void setTitle(String title) {                                /***/
+        this.title = title;                                             /***/
+    }                                                                   /***/
+                                                                        /***/
+    public void setContent(String content) {                            /***/
+        this.content = content;                                         /***/
+    }                                                                   /***/
+                                                                        /***/
+    public void setCreationTimestamp(long creationTimestamp) {        /***/
+        this.creationTimestamp = creationTimestamp;                     /***/
+    }                                                                   /***/
+                                                                        /***/
+    public void setOwnerUsername(String ownerUsername) {                /***/
+        this.ownerUsername = ownerUsername;                             /***/
+    }                                                                   /***/
+    /***********************************************************************/
 }

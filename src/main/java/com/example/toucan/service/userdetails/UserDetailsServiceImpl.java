@@ -2,6 +2,7 @@ package com.example.toucan.service.userdetails;
 
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final RepositoryUser repositoryUser;
+    private final ModelMapper modelMapper;
 
-    public UserDetailsServiceImpl(RepositoryUser repositoryUser) {
+    public UserDetailsServiceImpl(RepositoryUser repositoryUser, ModelMapper modelMapper) {
         this.repositoryUser = repositoryUser;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -19,10 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         EntityUser entityUser = repositoryUser.findByUsername(username);
         if(entityUser == null) throw new NullPointerException();
 
-        return new UserDetailsImpl(
-                entityUser.getUsername(),
-                entityUser.getPassword(),
-                entityUser.getRole(),
-                entityUser.isLocked());
+        return modelMapper.map(entityUser, UserDetailsImpl.class);
     }
 }

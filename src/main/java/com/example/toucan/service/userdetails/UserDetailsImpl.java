@@ -1,11 +1,14 @@
 package com.example.toucan.service.userdetails;
 
+import com.example.toucan.model.entity.EntityUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -21,6 +24,9 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
         this.lockStatus = lockStatus;
+
+        List<Object> obj = new ArrayList<>();
+        obj.add(new EntityUser()) ;
     }
 
     @Override
@@ -60,4 +66,24 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    /******************************************************
+     * SETTERS FOR {@link org.modelmapper.ModelMapper} /***
+     */                                                /***/
+    public void setUsername(String username) {         /***/
+        this.username = username;                      /***/
+    }                                                  /***/
+                                                       /***/
+    public void setPassword(String password) {         /***/
+        this.password = password;                      /***/
+    }                                                  /***/
+                                                       /***/
+    public void setAuthorities(String authorities) {   /***/
+        this.authorities = authorities;                /***/
+    }                                                  /***/
+                                                       /***/
+    public void setLockStatus(boolean lockStatus) {    /***/
+        this.lockStatus = lockStatus;                  /***/
+    }                                                  /***/
+    /******************************************************/
 }

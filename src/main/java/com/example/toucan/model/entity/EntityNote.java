@@ -9,17 +9,16 @@ public class EntityNote {
 
     public EntityNote(){}
 
-    //creationDate pattern = yyyyMMddHHmm
-    public EntityNote(String title, String content, String creationDate, EntityUser owner){
+    public EntityNote(String title, String content, long creationTimestamp, EntityUser owner){
         this.title = title;
         this.content = content;
-        this.creationDate = creationDate;
+        this.creationTimestamp = creationTimestamp;
         this.owner = owner;
     }
 
     @Id
     @Column(name = "uuid_note", length = 16, unique = true, nullable = false)
-    private UUID uuid = UUID.randomUUID();
+    private String uuid = String.valueOf(UUID.randomUUID());
 
     @Column(name =  "title", nullable = false)
     private String title;
@@ -27,15 +26,15 @@ public class EntityNote {
     @Column(name =  "content", nullable = false)
     private String content;
 
-    @Column(name = "creation_date", nullable = false)
-    private String creationDate;
+    @Column(name = "creation_timestamp", nullable = false)
+    private long creationTimestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private EntityUser owner;
 
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
@@ -47,8 +46,8 @@ public class EntityNote {
         return content;
     }
 
-    public String getCreationDate() {
-        return creationDate;
+    public long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     public EntityUser getOwner() {

@@ -10,7 +10,9 @@ import java.util.*;
 @Table(name = "users")
 public class EntityUser {
 
+    @Transient
     private final String DEF_ROLE = "ROLE_USER";
+    @Transient
     private final boolean DEF_LOCK_STATUS = false;
 
     public EntityUser(){}

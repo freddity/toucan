@@ -5,12 +5,10 @@ import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.repository.RepositoryUser;
 import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import static com.example.toucan.util.JwtUtil.extractUsername;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service
 public class ServiceUser {
@@ -51,13 +49,13 @@ public class ServiceUser {
      * @param newPasswordRe repeated password, mus be same as {@code newPassword}
      */
     private void resetPassword(String token, String oldPassword, String newPassword, String newPasswordRe) {
-        if (oldPassword.equals(service.loadUserByUsername(extractUsername(token)).getPassword())
-                && service.loadUserByUsername(extractUsername(token)).isAccountNonLocked()
+        if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())
+                && service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()
                 && newPassword.equals(newPasswordRe)) {
 
-            repositoryUser.changePassword(extractUsername(token), newPassword); return;
+            repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword); return;
         }
-        throw new ResponseStatusException(FORBIDDEN, "possible causes: passwords are wrong, account is locked");
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "possible causes: passwords are wrong, account is locked");
     }
 
     /**
@@ -67,10 +65,10 @@ public class ServiceUser {
      */
     public void deleteAccount(String token, DtoPassword dtoPassword) {
         token = token.substring(7);
-        if (service.loadUserByUsername(extractUsername(token)).getPassword().equals(dtoPassword.getPassword())) {
-            repositoryUser.setLockStatus(extractUsername(token), true);
+        if (service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword().equals(dtoPassword.getPassword())) {
+            repositoryUser.setLockStatus(jwtUtil.extractUsername(token), true);
         } else {
-            throw new ResponseStatusException(FORBIDDEN, "possible causes: wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "possible causes: wrong password");
         }
     }
 }

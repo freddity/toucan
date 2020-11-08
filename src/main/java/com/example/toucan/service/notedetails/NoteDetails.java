@@ -11,7 +11,7 @@ public interface NoteDetails extends Serializable {
 
     String getContent();
 
-    String getCreationTimestamp();
+    long getCreationTimestamp();
 
     String getOwnerUsername();
 }

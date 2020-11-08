@@ -6,26 +6,31 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * DTO used to transfer information about note in and outside the system
+ */
 public class DtoNote implements Serializable {
 
     private UUID uuid;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
-    private String creationTimestamp;
+    private long creationTimestamp;
     private String ownerUsername;
 
     /**
      * Constructor used to return a note to client
-     * @param uuid
-     * @param title
-     * @param content
-     * @param creationTimestamp
-     * @param ownerUsername
+     * @param uuid note identifier
+     * @param title note title
+     * @param content note content
+     * @param creationTimestamp note creation date in unix timestamp (in seconds)
+     * @param ownerUsername note owner/creator username
      */
     public DtoNote(@JsonProperty("uuid") @NotBlank UUID uuid,
                    @JsonProperty("title") @NotBlank String title,
                    @JsonProperty("content") @NotBlank String content,
-                   @JsonProperty("creationtimestamp") @NotBlank String creationTimestamp,
+                   @JsonProperty("creationtimestamp") @NotBlank long creationTimestamp,
                    @JsonProperty("owner") @NotBlank String ownerUsername) {
         this.uuid = uuid;
         this.title = title;
@@ -36,8 +41,8 @@ public class DtoNote implements Serializable {
 
     /**
      * Constructor used to create a note
-     * @param title
-     * @param content
+     * @param title note title
+     * @param content note content
      */
     public DtoNote(@JsonProperty("title") @NotBlank String title,
                    @JsonProperty("content") @NotBlank String content) {
@@ -74,11 +79,11 @@ public class DtoNote implements Serializable {
         this.content = content;
     }
 
-    public String getCreationTimestamp() {
+    public long getCreationTimestamp() {
         return creationTimestamp;
     }
 
-    public void setCreationTimestamp(String creationTimestamp) {
+    public void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 

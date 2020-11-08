@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import static com.example.toucan.util.JwtUtil.extractUsername;
-import static com.example.toucan.util.JwtUtil.validateToken;
-
 @Component
 public class FilterSelfProfileActions extends OncePerRequestFilter {
 
@@ -42,7 +39,7 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
 
         System.out.println(token);
 
-        if (validateToken(token, detailsService.loadUserByUsername(extractUsername(token)))) {
+        if (jwtUtil.validateToken(token, detailsService.loadUserByUsername(jwtUtil.extractUsername(token)))) {
             UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
             SecurityContextHolder.getContext().setAuthentication(authResult);
             chain.doFilter(request, response);
@@ -53,8 +50,8 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
 
-        String username = extractUsername(token);
-        Collection<? extends GrantedAuthority> authorities = detailsService.loadUserByUsername(extractUsername(token)).getAuthorities();
+        String username = jwtUtil.extractUsername(token);
+        Collection<? extends GrantedAuthority> authorities = detailsService.loadUserByUsername(jwtUtil.extractUsername(token)).getAuthorities();
         System.out.println("FilterSelfProfileActions.getAuthenticationByToken() role = " + authorities);
 
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
