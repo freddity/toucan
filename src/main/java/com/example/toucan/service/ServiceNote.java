@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ServiceNote {
@@ -38,9 +39,9 @@ public class ServiceNote {
         this.jwtUtil = new JwtUtil();
     }
 
-    public DtoNote getNote(String uuid) {
-        if (noteDetailsService.loadNoteByUUID(String.valueOf(uuid)) != null) {
-            return modelMapper.map(noteDetailsService.loadNoteByUUID(String.valueOf(uuid)), DtoNote.class);
+    public DtoNote getNote(UUID uuid) {
+        if (noteDetailsService.loadNoteByUUID(uuid) != null) {
+            return modelMapper.map(noteDetailsService.loadNoteByUUID(uuid), DtoNote.class);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -54,12 +55,12 @@ public class ServiceNote {
                 repositoryUser.findByUsername(jwtUtil.extractUsername(token.substring(7)))));
     }
 
-    public DtoShortNoteContainer getShortNotesProvider(String token, int fromIndex, int quantity) {
-        return getShortNotes(jwtUtil.extractUsername(token.substring(7)), fromIndex, quantity);
+    public DtoShortNoteContainer getShortNotesProvider(String token, int page, int size) {
+        return getShortNotes(jwtUtil.extractUsername(token.substring(7)), page, size);
     }
 
-    private DtoShortNoteContainer getShortNotes(String username, int fromIndex, int quantity) {
-        Pageable pageable = PageRequest.of(fromIndex, quantity);
+    private DtoShortNoteContainer getShortNotes(String username, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         System.out.println("eeelllooo: " + repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable));
         List<EntityNote> entityList = repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable);
         List<DtoNote> dtoList = new ArrayList<>();

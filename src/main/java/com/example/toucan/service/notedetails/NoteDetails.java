@@ -1,10 +1,11 @@
 package com.example.toucan.service.notedetails;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public interface NoteDetails extends Serializable {
 
-    String getUUID();
+    UUID getUUID();
 
     String getTitle();
 

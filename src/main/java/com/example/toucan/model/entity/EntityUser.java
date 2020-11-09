@@ -26,9 +26,9 @@ public class EntityUser {
     }
 
     @Id
-    //@Type(type="org.hibernate.type.PostgresUUIDType")
+    @Type(type="org.hibernate.type.PostgresUUIDType")
     @Column(name = "uuid_user", length = 16, unique = true, nullable = false)
-    private final String uuid = String.valueOf(UUID.randomUUID());
+    private UUID uuid = UUID.randomUUID();
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -49,7 +49,7 @@ public class EntityUser {
     @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EntityNote> noteList = new ArrayList<>();
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
@@ -77,6 +77,9 @@ public class EntityUser {
         return noteList;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public void setUsername(String username) {
         this.username = username;

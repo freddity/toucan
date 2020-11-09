@@ -20,7 +20,7 @@ public class NoteDetailsServiceImpl implements NoteDetailsService {
     }
 
     @Override
-    public NoteDetailsImpl loadNoteByUUID(String uuid) throws NoteNotFoundException {
+    public NoteDetailsImpl loadNoteByUUID(UUID uuid) throws NoteNotFoundException {
         EntityNote entityNote = repositoryNote.findByUuid(uuid);
         if (entityNote == null) throw new NullPointerException();
         return modelMapper.map(entityNote, NoteDetailsImpl.class);

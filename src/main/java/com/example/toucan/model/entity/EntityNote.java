@@ -18,7 +18,7 @@ public class EntityNote {
 
     @Id
     @Column(name = "uuid_note", length = 16, unique = true, nullable = false)
-    private String uuid = String.valueOf(UUID.randomUUID());
+    private UUID uuid = UUID.randomUUID();
 
     @Column(name =  "title", nullable = false)
     private String title;
@@ -34,7 +34,7 @@ public class EntityNote {
     private EntityUser owner;
 
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 

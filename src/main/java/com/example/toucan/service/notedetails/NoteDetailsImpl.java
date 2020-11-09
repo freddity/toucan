@@ -1,15 +1,17 @@
 package com.example.toucan.service.notedetails;
 
+import java.util.UUID;
+
 public class NoteDetailsImpl implements NoteDetails {
 
-    private String uuid;
+    private UUID uuid;
     private String title;
     private String content;
     private long creationTimestamp;
     private String ownerUsername;
 
     public NoteDetailsImpl(
-            String uuid,
+            UUID uuid,
             String title,
             String content,
             long creationTimestamp,
@@ -22,7 +24,7 @@ public class NoteDetailsImpl implements NoteDetails {
     }
 
     @Override
-    public String getUUID() {
+    public UUID getUUID() {
         return uuid;
     }
 
@@ -51,7 +53,7 @@ public class NoteDetailsImpl implements NoteDetails {
     /***/                                                               /***/
     public NoteDetailsImpl() {}                                         /***/
                                                                         /***/
-    public void setUuid(String uuid) {                                  /***/
+    public void setUuid(UUID uuid) {                                  /***/
         this.uuid = uuid;                                               /***/
     }                                                                   /***/
                                                                         /***/

@@ -13,10 +13,10 @@ import java.util.UUID;
 @Repository
 public interface RepositoryNote extends JpaRepository<EntityNote, UUID> {
 
-    EntityNote findByUuid(String uuid);
+    EntityNote findByUuid(UUID uuid);
 
-    @Query("SELECT u FROM EntityNote u WHERE u.owner = :userid ORDER BY u.creationTimestamp DESC")
-    List<EntityNote> takeForShortNotes(@Param("userid") String userId,
+    @Query("SELECT u FROM EntityNote u WHERE u.owner.uuid = :userid ORDER BY u.creationTimestamp DESC")
+    List<EntityNote> takeForShortNotes(@Param("userid") UUID userId,
                                        Pageable pageable);
 
 }

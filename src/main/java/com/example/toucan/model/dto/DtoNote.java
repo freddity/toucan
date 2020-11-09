@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * DTO used to transfer information about note in and outside the system
  */
 public class DtoNote implements Serializable {
 
-    private String uuid;
+    private UUID uuid;
     @NotBlank
     private String title;
     @NotBlank
@@ -26,7 +27,7 @@ public class DtoNote implements Serializable {
      * @param creationTimestamp note creation date in unix timestamp (in seconds)
      * @param ownerUsername note owner/creator username
      */
-    public DtoNote(@JsonProperty("uuid") @NotBlank String uuid,
+    public DtoNote(@JsonProperty("uuid") @NotBlank UUID uuid,
                    @JsonProperty("title") @NotBlank String title,
                    @JsonProperty("content") @NotBlank String content,
                    @JsonProperty("creationtimestamp") @NotBlank long creationTimestamp,
@@ -54,11 +55,11 @@ public class DtoNote implements Serializable {
      */
     public DtoNote() {}
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

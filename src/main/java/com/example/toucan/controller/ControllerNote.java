@@ -20,21 +20,21 @@ public class ControllerNote {
     }
 
     @GetMapping("/full")
-    public DtoNote getNote(@RequestParam("id") String uuid) {
+    public DtoNote getNote(@RequestParam("id") UUID uuid) {
         return serviceNote.getNote(uuid);
     }
 
     @GetMapping("/thumbnails")
     public DtoShortNoteContainer getShortNotes(@RequestHeader(name="Authorization") String token,
-                                               @RequestParam("fromindex") int fromIndex,
-                                               @RequestParam("quantity") int quantity) {
-        return serviceNote.getShortNotesProvider(token, fromIndex, quantity);
+                                               @RequestParam("page") int page,
+                                               @RequestParam("size") int size) {
+        return serviceNote.getShortNotesProvider(token, page, size);
     }
 
     @PostMapping(consumes={"application/json"})
     public void createNote(@RequestHeader(name="Authorization") String token,
                            @RequestBody DtoNote dtoNote) {
-        //serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
+        serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
     }
 
     @DeleteMapping("/{id}")
