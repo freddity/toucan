@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ServiceNote {
@@ -39,9 +38,9 @@ public class ServiceNote {
         this.jwtUtil = new JwtUtil();
     }
 
-    public DtoNote getNote(UUID uuid) {
-        if (noteDetailsService.loadNoteByUUID(uuid) != null) {
-            return modelMapper.map(noteDetailsService.loadNoteByUUID(uuid), DtoNote.class);
+    public DtoNote getNote(String uuid) {
+        if (noteDetailsService.loadNoteByUUID(String.valueOf(uuid)) != null) {
+            return modelMapper.map(noteDetailsService.loadNoteByUUID(String.valueOf(uuid)), DtoNote.class);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -61,7 +60,8 @@ public class ServiceNote {
 
     private DtoShortNoteContainer getShortNotes(String username, int fromIndex, int quantity) {
         Pageable pageable = PageRequest.of(fromIndex, quantity);
-        List<EntityNote> entityList = repositoryNote.takeForShortNotes(String.valueOf(repositoryUser.findByUsername(username).getUuid()), pageable);
+        System.out.println("eeelllooo: " + repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable));
+        List<EntityNote> entityList = repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable);
         List<DtoNote> dtoList = new ArrayList<>();
 
         for(EntityNote n :entityList) {

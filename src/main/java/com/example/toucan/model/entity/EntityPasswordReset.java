@@ -17,7 +17,7 @@ public class EntityPasswordReset {
 
     @Id
     @Column(name = "uuid_password_reset", length = 16, unique = true, nullable = false)
-    private UUID uuid = UUID.randomUUID();
+    private String uuid = String.valueOf(UUID.randomUUID());
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;
@@ -29,7 +29,7 @@ public class EntityPasswordReset {
     @Column(name = "expiry_date", nullable = false)
     private long expiryDate;
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 

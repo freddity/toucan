@@ -15,11 +15,15 @@ public class DtoShortNoteContainer implements Serializable {
         this.noteList = noteList;
     }
 
-    /***********************************************************
-     * SETTER FOR {@link org.modelmapper.ModelMapper}       /***
-     */                                                     /***/
-    public void setNoteList(List<DtoNote> noteList) {       /***/
-        this.noteList = noteList;                           /***/
-    }                                                       /***/
-    /***********************************************************/
+    /****************************************************************
+     * SETTER AND GETTER FOR {@link org.modelmapper.ModelMapper} /***
+     **/                                                         /***/
+    public List<DtoNote> getNoteList() {                         /***/
+        return noteList;                                         /***/
+    }                                                            /***/
+                                                                 /***/
+    public void setNoteList(List<DtoNote> noteList) {            /***/
+        this.noteList = noteList;                                /***/
+    }                                                            /***/
+    /****************************************************************/
 }

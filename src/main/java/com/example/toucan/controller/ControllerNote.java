@@ -20,7 +20,7 @@ public class ControllerNote {
     }
 
     @GetMapping("/full")
-    public DtoNote getNote(@RequestParam("id") UUID uuid) {
+    public DtoNote getNote(@RequestParam("id") String uuid) {
         return serviceNote.getNote(uuid);
     }
 
@@ -31,10 +31,10 @@ public class ControllerNote {
         return serviceNote.getShortNotesProvider(token, fromIndex, quantity);
     }
 
-    @PostMapping
+    @PostMapping(consumes={"application/json"})
     public void createNote(@RequestHeader(name="Authorization") String token,
-                           @RequestBody @Size() DtoNote dtoNote) {
-        serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
+                           @RequestBody DtoNote dtoNote) {
+        //serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
     }
 
     @DeleteMapping("/{id}")

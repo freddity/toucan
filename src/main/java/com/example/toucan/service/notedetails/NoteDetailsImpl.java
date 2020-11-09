@@ -1,19 +1,15 @@
 package com.example.toucan.service.notedetails;
 
-import com.example.toucan.model.entity.EntityUser;
-
-import java.util.UUID;
-
 public class NoteDetailsImpl implements NoteDetails {
 
-    private UUID uuid;
+    private String uuid;
     private String title;
     private String content;
     private long creationTimestamp;
     private String ownerUsername;
 
     public NoteDetailsImpl(
-            UUID uuid,
+            String uuid,
             String title,
             String content,
             long creationTimestamp,
@@ -26,7 +22,7 @@ public class NoteDetailsImpl implements NoteDetails {
     }
 
     @Override
-    public UUID getUUID() {
+    public String getUUID() {
         return uuid;
     }
 
@@ -56,7 +52,7 @@ public class NoteDetailsImpl implements NoteDetails {
     public NoteDetailsImpl() {}                                         /***/
                                                                         /***/
     public void setUuid(String uuid) {                                  /***/
-        this.uuid = UUID.fromString(uuid);                              /***/
+        this.uuid = uuid;                                               /***/
     }                                                                   /***/
                                                                         /***/
     public void setTitle(String title) {                                /***/
@@ -67,7 +63,7 @@ public class NoteDetailsImpl implements NoteDetails {
         this.content = content;                                         /***/
     }                                                                   /***/
                                                                         /***/
-    public void setCreationTimestamp(long creationTimestamp) {        /***/
+    public void setCreationTimestamp(long creationTimestamp) {          /***/
         this.creationTimestamp = creationTimestamp;                     /***/
     }                                                                   /***/
                                                                         /***/

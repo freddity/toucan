@@ -1,5 +1,6 @@
 package com.example.toucan.model.entity;
 
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -25,8 +26,9 @@ public class EntityUser {
     }
 
     @Id
+    //@Type(type="org.hibernate.type.PostgresUUIDType")
     @Column(name = "uuid_user", length = 16, unique = true, nullable = false)
-    private final UUID uuid = UUID.randomUUID();
+    private final String uuid = String.valueOf(UUID.randomUUID());
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -47,7 +49,7 @@ public class EntityUser {
     @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EntityNote> noteList = new ArrayList<>();
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
