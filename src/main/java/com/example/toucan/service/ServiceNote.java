@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -61,7 +62,6 @@ public class ServiceNote {
 
     private DtoShortNoteContainer getShortNotes(String username, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        System.out.println("eeelllooo: " + repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable));
         List<EntityNote> entityList = repositoryNote.takeForShortNotes(repositoryUser.findByUsername(username).getUuid(), pageable);
         List<DtoNote> dtoList = new ArrayList<>();
 
@@ -70,11 +70,14 @@ public class ServiceNote {
         }
 
         return new DtoShortNoteContainer(dtoList);
-        //return modelMapper.map(notShortNotesYet, DtoShortNoteContainer.class);
     }
 
     public void deleteNote(UUID id) {
-        repositoryNote.delete(repositoryNote.findByUuid(id));
+        try {
+            repositoryNote.delete(Objects.requireNonNull(repositoryNote.findByUuid(id)));
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "note with selected ID doesn't exist");
+        }
     }
 
 

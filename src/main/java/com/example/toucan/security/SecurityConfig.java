@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         FilterSelfProfileActions filter = new FilterSelfProfileActions(userDetailsService);
 
         registrationBean.setFilter(filter);
-        registrationBean.addUrlPatterns("/toucan/user");
+        registrationBean.addUrlPatterns("/toucan/user", "/toucan/note");
         return registrationBean;
     }
 }
