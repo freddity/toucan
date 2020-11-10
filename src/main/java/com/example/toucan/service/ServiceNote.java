@@ -73,6 +73,10 @@ public class ServiceNote {
         //return modelMapper.map(notShortNotesYet, DtoShortNoteContainer.class);
     }
 
+    public void deleteNote(UUID id) {
+        repositoryNote.delete(repositoryNote.findByUuid(id));
+    }
+
 
     //todo create filter for ControllerNote WAŻNE BO NIE MA AUTORYZACJI ODSTEPU DO NOTATEK KAZDY MOZE SIE DO NICH DOSTAC
     //todo zrob tak zeby kazdy endpoint zwracal nowy token!!!

@@ -38,8 +38,8 @@ public class ControllerNote {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable("id") String id) {
-        //serviceNote.
+    public void deleteNote(@PathVariable("id") UUID id) {
+        serviceNote.deleteNote(id);
     }
 
     @PatchMapping("/{id}")
