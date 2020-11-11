@@ -1,5 +1,6 @@
 package com.example.toucan.security;
 
+import com.example.toucan.security.filters.FilterNotePermission;
 import com.example.toucan.security.filters.FilterSelfProfileActions;
 import com.example.toucan.service.notedetails.NoteDetailsServiceImpl;
 import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.addFilterAfter(new FilterSelfProfileActions(userDetailsService), BasicAuthenticationFilter.class)
+                .addFilterAfter(new FilterNotePermission(), FilterSelfProfileActions.class);
     }
 
     @Override
@@ -48,14 +52,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
+    /*@Bean
     public FilterRegistrationBean<FilterSelfProfileActions> filterRegistrationBean() {
 
         FilterRegistrationBean<FilterSelfProfileActions> registrationBean = new FilterRegistrationBean<>();
         FilterSelfProfileActions filter = new FilterSelfProfileActions(userDetailsService);
 
         registrationBean.setFilter(filter);
-        registrationBean.addUrlPatterns("/toucan/user", "/toucan/note");
+        registrationBean.addUrlPatterns("/toucan/user/*", "/toucan/note/*", "/toucan/note");
         return registrationBean;
-    }
+    }*/
 }

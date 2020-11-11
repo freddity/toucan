@@ -20,28 +20,18 @@ public class ControllerUser {
         this.serviceUser = serviceUser;
     }
 
-    //todo zamiast uzywac tokena do usernama uzyj username z urla
-    @PatchMapping
-    @PreAuthorize("isAuthenticated()")
-    public void resetPassword(@RequestHeader(name="Authorization") String token,
+    @PatchMapping("/{username}")
+    public void resetPassword(@PathVariable("username") String pathUsername,
+                              @RequestHeader(name="Authorization") String token,
                               @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
-        serviceUser.resetPasswordProvider(token, dtoResetPassword);
+        serviceUser.resetPasswordProvider(pathUsername, token, dtoResetPassword);
     }
 
-    @DeleteMapping
-    @PreAuthorize("isAuthenticated()")
-    public void deleteAccount(@RequestHeader(name="Authorization") String token,
-                              @RequestBody DtoPassword dtoPassword) {
+    @DeleteMapping("/{username}")
+    public void deleteAccount(@PathVariable("username") String username,
+                              @RequestHeader(name="Authorization") String token,
+                              @Valid @NonNull @RequestBody DtoPassword dtoPassword) {
         serviceUser.deleteAccount(token, dtoPassword);
-    }
-
-    /**
-     * Temporary endpoint for return ALL notes by user id
-     */
-    @GetMapping("/allnotes")
-    @PreAuthorize("isAuthenticated()")
-    public void returnAllNotes(@RequestHeader(name="Authorization") String token) {
-
     }
 
     /*@ExceptionHandler({ SignatureException.class })

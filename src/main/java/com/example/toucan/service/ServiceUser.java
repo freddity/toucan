@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Service
 public class ServiceUser {
 
@@ -37,8 +39,8 @@ public class ServiceUser {
      * I've used {@code token.substring(7)} because ons start of token is {@code "Bearer "}, which must be deleted.
      * @param dto {@link DtoResetPassword} which contains old pass, new pass and repeated new password.
      */
-    public void resetPasswordProvider(String token, DtoResetPassword dto) {
-        resetPassword(token.substring(7), dto.getOldPassword(), dto.getNewPassword(), dto.getNewPasswordRe());
+    public void resetPasswordProvider(String pathUsername, String token, DtoResetPassword dto) {
+        resetPassword(pathUsername, token.substring(7), dto.getOldPassword(), dto.getNewPassword(), dto.getNewPasswordRe());
     }
 
     /**
@@ -48,14 +50,31 @@ public class ServiceUser {
      * @param newPassword will be set as password if equal to {@code newPasswordRe}
      * @param newPasswordRe repeated password, mus be same as {@code newPassword}
      */
-    private void resetPassword(String token, String oldPassword, String newPassword, String newPasswordRe) {
-        if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())
+    private void resetPassword(String pathUsername, String token, String oldPassword, String newPassword, String newPasswordRe) {
+        /*if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())
                 && service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()
                 && newPassword.equals(newPasswordRe)) {
 
             repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword); return;
+        }*/
+
+        if (Objects.nonNull(service.loadUserByUsername(pathUsername))) {
+            if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())) {
+                if (service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()) {
+                    if (newPassword.equals(newPasswordRe)) {
+                        repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "passwords are not the same");
+                    }
+                } else {
+                    throw new ResponseStatusException(HttpStatus.LOCKED, "account is locked");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong current password");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user '" + pathUsername + "' not found");
         }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "possible causes: passwords are wrong, account is locked");
     }
 
     /**

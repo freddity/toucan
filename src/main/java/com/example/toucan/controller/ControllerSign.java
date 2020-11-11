@@ -21,7 +21,6 @@ public class ControllerSign {
     }
 
     @PostMapping("/signup")
-    @PreAuthorize("permitAll()")
     public void signUp(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword){
 
         //todo make validation and information user about errors system
@@ -30,7 +29,6 @@ public class ControllerSign {
     }
 
     @PostMapping("/signin")
-    @PreAuthorize("permitAll()")
     public String signIn(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
         return serviceSign.generateToken(dtoUsernamePassword);
     }

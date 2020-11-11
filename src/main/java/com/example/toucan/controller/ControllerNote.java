@@ -3,6 +3,7 @@ package com.example.toucan.controller;
 import com.example.toucan.model.dto.DtoNote;
 import com.example.toucan.model.dto.DtoShortNoteContainer;
 import com.example.toucan.service.ServiceNote;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Size;
