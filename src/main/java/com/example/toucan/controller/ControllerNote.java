@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/toucan/note")
+@RequestMapping("/")
 public class ControllerNote {
 
     private final ServiceNote serviceNote;
@@ -20,31 +20,40 @@ public class ControllerNote {
         this.serviceNote = serviceNote;
     }
 
-    @GetMapping("/full")
-    public DtoNote getNote(@RequestParam("id") UUID uuid) {
-        return serviceNote.getNote(uuid);
+    @GetMapping("/{username}/{id}")
+    public DtoNote getNote(@PathVariable("username") String username,
+                           @PathVariable("id") UUID id) {
+        return serviceNote.getNote(id);
     }
 
-    @GetMapping("/thumbnails")
-    public DtoShortNoteContainer getShortNotes(@RequestHeader(name="Authorization") String token,
+    @GetMapping("/{username}/thumbnails")
+    public DtoShortNoteContainer getShortNotes(@PathVariable("username") String username,
+                                               @RequestHeader("Authorization") String token,
                                                @RequestParam("page") int page,
                                                @RequestParam("size") int size) {
         return serviceNote.getShortNotesProvider(token, page, size);
     }
 
-    @PostMapping(consumes={"application/json"})
-    public void createNote(@RequestHeader(name="Authorization") String token,
+    @PostMapping("/{username}/create")
+    public void createNote(@PathVariable("username") String username,
+                           @RequestHeader(name="Authorization") String token,
                            @RequestBody DtoNote dtoNote) {
         serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable("id") UUID id) {
+    @DeleteMapping("/{username}/{id}")
+    public void deleteNote(@PathVariable("username") String username,
+                           @PathVariable("id") UUID id) {
         serviceNote.deleteNote(id);
     }
 
-    @PatchMapping("/{id}")
-    public void updateNote(@PathVariable("id") String id) {
+    @PatchMapping("/{username}/{id}")
+    public void updateNote(@PathVariable("username") String username,
+                           @PathVariable("id") UUID id) {
         //serviceNote.
     }
+
+    /*
+    use consumes={"application/json"} in the future
+     */
 }

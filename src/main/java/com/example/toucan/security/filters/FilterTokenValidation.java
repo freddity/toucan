@@ -22,14 +22,12 @@ import java.util.*;
 
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE-10)
-public class FilterSelfProfileActions extends OncePerRequestFilter {
-
-    private final String AUTHORIZATION = "authorization";
+public class FilterTokenValidation extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl detailsService;
     private final JwtUtil jwtUtil;
 
-    public FilterSelfProfileActions(UserDetailsServiceImpl detailsService) {
+    public FilterTokenValidation(UserDetailsServiceImpl detailsService) {
         this.detailsService = detailsService;
         this.jwtUtil = new JwtUtil();
     }
@@ -37,7 +35,6 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        System.out.println("PPP" + path);
         return path.startsWith("/toucan/auth");
     }
 
@@ -45,20 +42,26 @@ public class FilterSelfProfileActions extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         String token;
-        try { token = request.getHeader(AUTHORIZATION).substring(7); } catch (NullPointerException e) { throw new ResponseStatusException(HttpStatus.FORBIDDEN, "'authorization' header missing"); }
+        try { token = request.getHeader("authorization").substring(7); } catch (NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "'authorization' header missing");
+        }
 
+        List path = Arrays.asList(request.getServletPath().split("/"));
+        String pathUsername = (String) path.get(path.size()-2);
+        String pathLast = (String) path.get(path.size()-1);
 
-        String username = request.getServletPath().substring(request.getServletPath().lastIndexOf("/")+1);
-
-        if (!username.equals(jwtUtil.extractUsername(token))) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "you can make changes in only your profile");
+        if (!pathUsername.equals(jwtUtil.extractUsername(token))) {
+            response.sendError(401, "It is not your profile. You are permissed to make changes only to your profile.");
+            return;
         }
 
         if (jwtUtil.validateToken(token, detailsService.loadUserByUsername(jwtUtil.extractUsername(token)))) {
             UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
             SecurityContextHolder.getContext().setAuthentication(authResult);
-            chain.doFilter(request, response);
+            chain.doFilter(request, response);return;
         }
+
+        response.sendError(401, "You cannot be authorized.");
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {

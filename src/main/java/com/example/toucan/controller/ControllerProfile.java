@@ -2,36 +2,34 @@ package com.example.toucan.controller;
 
 import com.example.toucan.model.dto.DtoPassword;
 import com.example.toucan.model.dto.DtoResetPassword;
-import com.example.toucan.service.ServiceUser;
-import io.jsonwebtoken.SignatureException;
+import com.example.toucan.service.ServiceProfile;
 import org.springframework.lang.NonNull;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/toucan/user")
-public class ControllerUser {
+@RequestMapping("/")
+public class ControllerProfile {
 
-    private final ServiceUser serviceUser;
+    private final ServiceProfile serviceProfile;
 
-    public ControllerUser(ServiceUser serviceUser) {
-        this.serviceUser = serviceUser;
+    public ControllerProfile(ServiceProfile serviceProfile) {
+        this.serviceProfile = serviceProfile;
     }
 
-    @PatchMapping("/{username}")
+    @PatchMapping("/{username}/profile")
     public void resetPassword(@PathVariable("username") String pathUsername,
                               @RequestHeader(name="Authorization") String token,
                               @Valid @NonNull @RequestBody DtoResetPassword dtoResetPassword) {
-        serviceUser.resetPasswordProvider(pathUsername, token, dtoResetPassword);
+        serviceProfile.resetPasswordProvider(pathUsername, token, dtoResetPassword);
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/{username}/profile")
     public void deleteAccount(@PathVariable("username") String username,
                               @RequestHeader(name="Authorization") String token,
                               @Valid @NonNull @RequestBody DtoPassword dtoPassword) {
-        serviceUser.deleteAccount(token, dtoPassword);
+        serviceProfile.deleteAccount(token, dtoPassword);
     }
 
     /*@ExceptionHandler({ SignatureException.class })

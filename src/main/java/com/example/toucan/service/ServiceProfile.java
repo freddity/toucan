@@ -58,6 +58,8 @@ public class ServiceUser {
             repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword); return;
         }*/
 
+
+
         if (Objects.nonNull(service.loadUserByUsername(pathUsername))) {
             if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())) {
                 if (service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()) {
