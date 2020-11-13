@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -23,5 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(entityUser == null) throw new NullPointerException();
 
         return modelMapper.map(entityUser, UserDetailsImpl.class);
+    }
+
+    public boolean doesUserExists(String username) {
+        EntityUser entityUser = repositoryUser.findByUsername(username);
+        return !Objects.isNull(entityUser);
     }
 }

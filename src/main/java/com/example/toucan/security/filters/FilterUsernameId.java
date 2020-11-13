@@ -11,43 +11,48 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.*;
 
 @Order(Ordered.LOWEST_PRECEDENCE-9)
-public class FilterNotePermission extends OncePerRequestFilter {
+public class FilterUsernameId extends OncePerRequestFilter {
 
     private final NoteDetailsService noteDetailsService;
     private final UserDetailsService userDetailsService;
 
-    public FilterNotePermission(NoteDetailsService noteDetailsService,
-                                UserDetailsService userDetailsService) {
+    public FilterUsernameId(NoteDetailsService noteDetailsService,
+                            UserDetailsService userDetailsService) {
         this.noteDetailsService = noteDetailsService;
         this.userDetailsService = userDetailsService;
     }
 
+    //here will start working on permissions validation for endpoints ending with UUID
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("MAIN METHOD FILTERUSERNAME ID INVOKED");
+
         String token = request.getHeader("authorization").substring(7);
+        String verb = request.getMethod();
+        List path = Arrays.asList(request.getServletPath().split("/"));
+        String pathUsername = (String) path.get(path.size()-2);
+        String pathLast = (String) path.get(path.size()-1);
 
-        if (request.getServletPath().startsWith("/toucan/note/full")) {
-            if () {
 
-            }
-        } else if (request.getServletPath().startsWith("/toucan/note/thumbnails")) {
-            if () {
 
-            }
-        } else if (request.getServletPath().startsWith("/toucan/note/")) {
-            if () {
-
-            }
-        }
-        request.getMethod()
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-        return !path.startsWith("/toucan/note");
+        String fullPath = request.getServletPath();
+        List servletPath = Arrays.asList(request.getServletPath().split("/"));
+        String lastFromPath = (String) servletPath.get(servletPath.size()-1);
+
+        try {
+            UUID uuid = UUID.fromString(lastFromPath);
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
+
+        return !fullPath.startsWith("/toucan/note") || fullPath.startsWith("/toucan/auth");
     }
 }

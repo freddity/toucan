@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Objects;
 
 @Service
-public class ServiceUser {
+public class ServiceProfile {
 
     private final UserDetailsServiceImpl service;
     private final RepositoryUser repositoryUser;
@@ -27,7 +27,7 @@ public class ServiceUser {
      * @param passwordEncoder {@link PasswordEncoder} for encode or compare passwords.
      * @param jwtUtil {@link JwtUtil} utilities for creating, and managing JWT Tokens.
      */
-    public ServiceUser(UserDetailsServiceImpl service, RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public ServiceProfile(UserDetailsServiceImpl service, RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.service = service;
         this.repositoryUser = repositoryUser;
         this.passwordEncoder = passwordEncoder;
@@ -35,7 +35,7 @@ public class ServiceUser {
     }
 
     /**
-     * It is bridge between {@link com.example.toucan.controller.ControllerUser} and this service.
+     * It is bridge between {@link com.example.toucan.controller.ControllerProfile} and this service.
      * I've used {@code token.substring(7)} because ons start of token is {@code "Bearer "}, which must be deleted.
      * @param dto {@link DtoResetPassword} which contains old pass, new pass and repeated new password.
      */
