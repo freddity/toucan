@@ -29,7 +29,7 @@ public class EntityNote {
     @Column(name = "creation_timestamp", nullable = false)
     private long creationTimestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner")
     private EntityUser owner;
 

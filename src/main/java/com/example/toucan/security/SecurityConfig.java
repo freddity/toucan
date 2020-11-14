@@ -1,7 +1,9 @@
 package com.example.toucan.security;
 
-import com.example.toucan.security.filters.FilterUsernameId;
-import com.example.toucan.security.filters.FilterTokenValidation;
+import com.example.toucan.repository.RepositoryNote;
+import com.example.toucan.repository.RepositoryUser;
+import com.example.toucan.security.filters.FilterNotePermissionProcessor;
+import com.example.toucan.security.filters.FilterTokenValidator;
 import com.example.toucan.service.notedetails.NoteDetailsServiceImpl;
 import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -22,26 +24,30 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
-    private final NoteDetailsServiceImpl noteDetailsService;
+    private final NoteDetailsServiceImpl noteDetailsServiceImpl;
+    private final RepositoryNote repositoryNote;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final RepositoryUser repositoryUser;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService,
-                          NoteDetailsServiceImpl noteDetailsService) {
-        this.userDetailsService = userDetailsService;
-        this.noteDetailsService = noteDetailsService;
+    public SecurityConfig(NoteDetailsServiceImpl noteDetailsServiceImpl, RepositoryNote repositoryNote,
+                          UserDetailsServiceImpl userDetailsServiceImpl, RepositoryUser repositoryUser) {
+        this.noteDetailsServiceImpl = noteDetailsServiceImpl;
+        this.repositoryNote = repositoryNote;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.repositoryUser = repositoryUser;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http
-            .addFilterAfter(new FilterTokenValidation(userDetailsService), BasicAuthenticationFilter.class)
-            .addFilterAfter(new FilterUsernameId(noteDetailsService, userDetailsService), FilterTokenValidation.class);
+            .addFilterAfter(new FilterTokenValidator(userDetailsServiceImpl), BasicAuthenticationFilter.class)
+            .addFilterAfter(new FilterNotePermissionProcessor(noteDetailsServiceImpl, repositoryNote, userDetailsServiceImpl, repositoryUser), FilterTokenValidator.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsServiceImpl);
     }
 
     @Bean
