@@ -6,6 +6,7 @@ import com.example.toucan.service.ServiceNote;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class ControllerNote {
     @PostMapping("/{username}/create")
     public void createNote(@PathVariable("username") String username,
                            @RequestHeader(name="Authorization") String token,
-                           @RequestBody DtoNote dtoNote) {
+                           @RequestBody @NotNull DtoNote dtoNote) {
         serviceNote.createNote(token, dtoNote.getTitle(), dtoNote.getContent());
     }
 
@@ -48,9 +49,9 @@ public class ControllerNote {
     }
 
     @PatchMapping("/{username}/{id}")
-    public void updateNote(@PathVariable("username") String username,
-                           @PathVariable("id") UUID id) {
-        //serviceNote.
+    public void updateNote(@PathVariable("id") UUID id,
+                           @RequestBody @NotNull DtoNote dtoNote) {
+        serviceNote.updateNote(id, dtoNote);
     }
 
     /*

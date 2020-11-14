@@ -27,7 +27,7 @@ public class ServiceNote {
     private final UserDetailsServiceImpl userDetailsService;
     private final RepositoryNote repositoryNote;
     private final RepositoryUser repositoryUser;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
 
     public ServiceNote(NoteDetailsServiceImpl noteDetailsService, UserDetailsServiceImpl userDetailsService,
@@ -80,7 +80,10 @@ public class ServiceNote {
         }
     }
 
+    public void updateNote(UUID uuid, DtoNote dtoNote) {
+        repositoryNote.updateNote(dtoNote.getTitle(), dtoNote.getContent(), uuid);
+    }
 
-    //todo create filter for ControllerNote WAŻNE BO NIE MA AUTORYZACJI ODSTEPU DO NOTATEK KAZDY MOZE SIE DO NICH DOSTAC
+
     //todo zrob tak zeby kazdy endpoint zwracal nowy token!!!
 }

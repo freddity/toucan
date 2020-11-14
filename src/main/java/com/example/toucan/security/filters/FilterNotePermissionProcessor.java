@@ -35,8 +35,6 @@ public class FilterNotePermissionProcessor extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("MAIN METHOD FILTERUSERNAME IS INVOKED");
-
         List path = Arrays.asList(request.getServletPath().split("/"));
         String pathUsername = (String) path.get(path.size()-2);
         String pathNoteUUIDString = (String) path.get(path.size()-1);

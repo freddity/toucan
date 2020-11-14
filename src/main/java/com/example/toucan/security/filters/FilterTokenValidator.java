@@ -62,7 +62,7 @@ public class FilterTokenValidator extends OncePerRequestFilter {
 
         if (!Objects.equals(usernameFromPath, jwtUtil.extractUsername(token))) {
             if (userDetailsService.isUserExists(usernameFromPath)) {
-                response.sendError(401, "Given token not provided premission to proflie " + usernameFromPath + ".");
+                response.sendError(401, "Given token not provided premission to this resource.");
                 return;
             } else if (userDetailsService.isUserExists(jwtUtil.extractUsername(token))) {
                 response.sendError(401, "Wrong token. User with username contained in token does not exists.");
