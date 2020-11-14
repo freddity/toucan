@@ -15,6 +15,7 @@ import java.util.UUID;
 public interface RepositoryUser extends JpaRepository<EntityUser, UUID> {
 
     EntityUser findByUsername(String username);
+    EntityUser findByUuid(UUID uuid);
     EntityUser save(EntityUser entityUser);
 
     @Transactional

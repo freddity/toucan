@@ -27,8 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return modelMapper.map(entityUser, UserDetailsImpl.class);
     }
 
-    public boolean doesUserExists(String username) {
+    public boolean isUserExists(String username) {
         EntityUser entityUser = repositoryUser.findByUsername(username);
-        return !Objects.isNull(entityUser);
+        return Objects.nonNull(entityUser);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/toucan/auth")
+@RequestMapping("/auth")
 public class ControllerSign {
 
     private final ServiceSign serviceSign;

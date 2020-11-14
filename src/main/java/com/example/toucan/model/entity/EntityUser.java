@@ -46,7 +46,7 @@ public class EntityUser {
     @JoinColumn(name = "password_reset_token", referencedColumnName = "uuid_password_reset")
     private EntityPasswordReset passwordResetToken;
 
-    @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity=EntityNote.class, mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<EntityNote> noteList = new ArrayList<>();
 
     public UUID getUuid() {

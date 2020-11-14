@@ -24,9 +24,6 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
         this.lockStatus = lockStatus;
-
-        List<Object> obj = new ArrayList<>();
-        obj.add(new EntityUser()) ;
     }
 
     @Override
