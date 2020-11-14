@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Component
-@Order(Ordered.LOWEST_PRECEDENCE-10)
+//@Order(Ordered.LOWEST_PRECEDENCE-10)
 public class FilterTokenValidator extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -40,6 +40,8 @@ public class FilterTokenValidator extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println("TOKK");
 
         String token;
         try { token = request.getHeader("authorization").substring(7); } catch (NullPointerException e) {
@@ -74,8 +76,9 @@ public class FilterTokenValidator extends OncePerRequestFilter {
         }
 
         if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token)))) {
-            UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
-            SecurityContextHolder.getContext().setAuthentication(authResult);
+            //UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
+            //SecurityContextHolder.getContext().setAuthentication(authResult);
+            response.addHeader("authorization", "Bearer " + jwtUtil.generateToken(userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token))));
             filterChain.doFilter(request, response);
             return;
         }
@@ -83,9 +86,9 @@ public class FilterTokenValidator extends OncePerRequestFilter {
         response.sendError(401, "You cannot be authorized.");
     }
 
-    private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
+   /* private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
         String username = jwtUtil.extractUsername(token);
         Collection<? extends GrantedAuthority> authorities = userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token)).getAuthorities();
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
-    }
+    }*/
 }

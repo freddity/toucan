@@ -40,9 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        /*
+         * For some reason FilterTokenValidator add itself to chain so I've deleted line adding it to filter chain.
+         * I left only line adding FilterNotePermissionProcessor and chain works correctly.
+         */
         http
-            .addFilterAfter(new FilterTokenValidator(userDetailsServiceImpl), BasicAuthenticationFilter.class)
-            .addFilterAfter(new FilterNotePermissionProcessor(noteDetailsServiceImpl, repositoryNote, userDetailsServiceImpl, repositoryUser), FilterTokenValidator.class);
+            //.addFilterAfter(new FilterTokenValidator(userDetailsServiceImpl), BasicAuthenticationFilter.class)
+            //.addFilterAfter(new FilterNotePermissionProcessor(noteDetailsServiceImpl, repositoryNote, userDetailsServiceImpl, repositoryUser), FilterTokenValidator.class);
+              .addFilterAfter(new FilterNotePermissionProcessor(noteDetailsServiceImpl, repositoryNote, userDetailsServiceImpl, repositoryUser), BasicAuthenticationFilter.class);
+
     }
 
     @Override

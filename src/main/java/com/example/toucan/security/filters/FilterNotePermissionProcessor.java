@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-@Order(Ordered.LOWEST_PRECEDENCE-9)
+//@Order(Ordered.LOWEST_PRECEDENCE-9)
 public class FilterNotePermissionProcessor extends OncePerRequestFilter {
 
     private final NoteDetailsService noteDetailsService;
@@ -34,6 +34,8 @@ public class FilterNotePermissionProcessor extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println("PERMM");
 
         List path = Arrays.asList(request.getServletPath().split("/"));
         String pathUsername = (String) path.get(path.size()-2);
