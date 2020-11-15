@@ -67,6 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    /*
+    This bean is not necessary but may will be usefull in the future.
+     */
+
     /*@Bean
     public FilterRegistrationBean<FilterSelfProfileActions> filterRegistrationBean() {
 

@@ -48,16 +48,16 @@ public class ServiceNote {
         }
     }
 
-    public void createNote(String token, String title, String content) {
+    public void createNote(String username, String title, String content) {
         repositoryNote.save(new EntityNote(
                 title,
                 content,
                 System.currentTimeMillis()/1000,
-                repositoryUser.findByUsername(jwtUtil.extractUsername(token.substring(7)))));
+                repositoryUser.findByUsername(username)));
     }
 
-    public DtoShortNoteContainer getShortNotesProvider(String token, int page, int size) {
-        return getShortNotes(jwtUtil.extractUsername(token.substring(7)), page, size);
+    public DtoShortNoteContainer getShortNotesProvider(String username, int page, int size) {
+        return getShortNotes(username, page, size);
     }
 
     private DtoShortNoteContainer getShortNotes(String username, int page, int size) {

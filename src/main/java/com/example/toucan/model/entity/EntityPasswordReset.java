@@ -17,7 +17,7 @@ public class EntityPasswordReset {
 
     @Id
     @Column(name = "uuid_password_reset", length = 16, unique = true, nullable = false)
-    private String uuid = String.valueOf(UUID.randomUUID());
+    private final String uuid = String.valueOf(UUID.randomUUID());
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;

@@ -86,6 +86,10 @@ public class FilterTokenValidator extends OncePerRequestFilter {
         response.sendError(401, "You cannot be authorized.");
     }
 
+    /*
+     Actually I don't need below part of code. I use token instead username-password authorization.
+     */
+
    /* private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
         String username = jwtUtil.extractUsername(token);
         Collection<? extends GrantedAuthority> authorities = userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token)).getAuthorities();

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class DtoPassword implements Serializable {
 
     @NotBlank
-    private String password;
+    private final String password;
 
     public DtoPassword(@JsonProperty("password") @NotBlank String password) {
         this.password = password;

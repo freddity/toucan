@@ -33,14 +33,14 @@ public class ServiceSign {
         if (repositoryUser.findByUsername(username) == null) {
             return repositoryUser.save(new EntityUser(username, password));
         }
-        throw new ResponseStatusException(CONFLICT, "possible causes: username is already taken");
+        throw new ResponseStatusException(CONFLICT, "Username is already taken.");
     }
 
     public String generateToken(DtoUsernamePassword dto) {
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
             return jwtUtil.generateToken(detailsService.loadUserByUsername(dto.getUsername()));
         } else {
-            throw new ResponseStatusException(FORBIDDEN, "possible causes: username or password are incorrect, account is deleted, account doesn't exist");
+            throw new ResponseStatusException(FORBIDDEN, "Username or password are incorrect or account been deleted or account doesn't exist");
         }
     }
 
