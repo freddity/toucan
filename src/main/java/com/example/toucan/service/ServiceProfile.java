@@ -39,57 +39,38 @@ public class ServiceProfile {
      * I've used {@code token.substring(7)} because ons start of token is {@code "Bearer "}, which must be deleted.
      * @param dto {@link DtoResetPassword} which contains old pass, new pass and repeated new password.
      */
-    public void resetPasswordProvider(String pathUsername, String token, DtoResetPassword dto) {
-        resetPassword(pathUsername, token.substring(7), dto.getOldPassword(), dto.getNewPassword(), dto.getNewPasswordRe());
+    public void resetPasswordProvider(String pathUsername, DtoResetPassword dto) {
+        resetPassword(pathUsername, dto.getOldPassword(), dto.getNewPassword(), dto.getNewPasswordRe());
     }
 
     /**
      * Proper change password method.
-     * @param token JWT Token
      * @param oldPassword actual password
      * @param newPassword will be set as password if equal to {@code newPasswordRe}
      * @param newPasswordRe repeated password, mus be same as {@code newPassword}
      */
-    private void resetPassword(String pathUsername, String token, String oldPassword, String newPassword, String newPasswordRe) {
-        /*if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())
-                && service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()
-                && newPassword.equals(newPasswordRe)) {
-
-            repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword); return;
-        }*/
-
-
-
-        if (Objects.nonNull(service.loadUserByUsername(pathUsername))) {
-            if (oldPassword.equals(service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword())) {
-                if (service.loadUserByUsername(jwtUtil.extractUsername(token)).isAccountNonLocked()) {
-                    if (newPassword.equals(newPasswordRe)) {
-                        repositoryUser.changePassword(jwtUtil.extractUsername(token), newPassword);
-                    } else {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "passwords are not the same");
-                    }
-                } else {
-                    throw new ResponseStatusException(HttpStatus.LOCKED, "account is locked");
-                }
+    private void resetPassword(String pathUsername, String oldPassword, String newPassword, String newPasswordRe) {
+        if (repositoryUser.findByUsername(pathUsername).getPassword().equals(oldPassword)) {
+            if (newPassword.equals(newPasswordRe)) {
+                repositoryUser.changePassword(pathUsername, newPassword);
             } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong current password");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords are not the same.");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user '" + pathUsername + "' not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong current password.");
         }
     }
 
     /**
      * This method is called when user want to delete own account.
      * Default lockStatus in {@link com.example.toucan.model.entity.EntityUser} is {@code false}
-     * @param token JWT Token passed by user through http request
+     * @param username of caller
      */
-    public void deleteAccount(String token, DtoPassword dtoPassword) {
-        token = token.substring(7);
-        if (service.loadUserByUsername(jwtUtil.extractUsername(token)).getPassword().equals(dtoPassword.getPassword())) {
-            repositoryUser.setLockStatus(jwtUtil.extractUsername(token), true);
+    public void deleteAccount(String username, DtoPassword dtoPassword) {
+        if (service.loadUserByUsername(username).getPassword().equals(dtoPassword.getPassword())) {
+            repositoryUser.setLockStatus(username, true);
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "possible causes: wrong password");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wrong password.");
         }
     }
 }

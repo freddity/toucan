@@ -35,15 +35,17 @@ public class FilterNotePermissionProcessor extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("PERMM");
-
         List path = Arrays.asList(request.getServletPath().split("/"));
         String pathUsername = (String) path.get(path.size()-2);
         String pathNoteUUIDString = (String) path.get(path.size()-1);
         UUID pathNoteUUID = UUID.fromString(pathNoteUUIDString);
 
+        if (repositoryUser.findByUsername(pathUsername).isLocked()) {
+            response.sendError(423, "This account is locked.");
+            return;
+        }
+
         List<EntityNote> notes = repositoryUser.findByUsername(pathUsername).getNoteList();
-        System.out.println(notes.toString());
         for (EntityNote e : notes) {
             if (pathNoteUUID.equals(e.getUuid())) {
                 filterChain.doFilter(request, response);

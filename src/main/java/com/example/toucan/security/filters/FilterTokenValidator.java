@@ -41,8 +41,6 @@ public class FilterTokenValidator extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("TOKK");
-
         String token;
         try { token = request.getHeader("authorization").substring(7); } catch (NullPointerException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "'authorization' header missing");
