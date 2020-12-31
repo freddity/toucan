@@ -19,7 +19,7 @@ public class ControllerProfile {
     private final ServiceProfile serviceProfile;
 
     /**
-     * A constructor with autoinjected constant.
+     * A constructor with autoinjected {@link ServiceProfile}
      * @param serviceProfile busines logic for prifile management.
      */
     public ControllerProfile(ServiceProfile serviceProfile) {

@@ -3,32 +3,26 @@ package com.example.toucan.service;
 import com.example.toucan.model.dto.DtoPassword;
 import com.example.toucan.model.dto.DtoResetPassword;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
-
 @Service
 public class ServiceProfile {
 
-    private final UserDetailsServiceImpl service;
     private final RepositoryUser repositoryUser;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     /**
      * Constructor for auto injection by Spring Boot.
-     * @param service {@link UserDetailsServiceImpl} for load user by username.
      * @param repositoryUser {@link RepositoryUser} for get data about user.
      * @param passwordEncoder {@link PasswordEncoder} for encode or compare passwords.
      * @param jwtUtil {@link JwtUtil} utilities for creating, and managing JWT Tokens.
      */
-    public ServiceProfile(UserDetailsServiceImpl service, RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.service = service;
+    public ServiceProfile(RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.repositoryUser = repositoryUser;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -67,7 +61,7 @@ public class ServiceProfile {
      * @param username of caller
      */
     public void deleteAccount(String username, DtoPassword dtoPassword) {
-        if (service.loadUserByUsername(username).getPassword().equals(dtoPassword.getPassword())) {
+        if (repositoryUser.findByUsername(username).getPassword().equals(dtoPassword.getPassword())) {
             repositoryUser.setLockStatus(username, true);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wrong password.");

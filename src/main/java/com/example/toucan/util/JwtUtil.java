@@ -1,6 +1,6 @@
 package com.example.toucan.util;
 
-import com.example.toucan.service.userdetails.UserDetailsImpl;
+import com.example.toucan.model.entity.EntityUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +21,7 @@ public class JwtUtil {
     /**
      * Secret key for decode jwt.
      */
-    private final String SECRET_KEY = "4sm$0dJHEJDX!EIedl4PfPvr6pRa5gj4Gdl)ySmX%T1f$yJdiMipe0x0txa%X(H^8B585NcKB6ZUX7F0l99bV&Yvf$0puL&874Fm\n";
+    private final String SECRET_KEY = "4sm$0dJHEJDX!EIedl4PfPvr6pRa5gj4Gdl)ySmX%T1f$yJdiMipe0x0txa%X(H^8B585NcKB6ZUX7F0l99bV&Yvf$0puL&874Fm";
     private final int EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     /**
@@ -56,17 +56,17 @@ public class JwtUtil {
 
     /**
      * This method provides token using {@link #createToken(Map, String)} and add claims to {@link Map}.
-     * @param userDetails user, for which token will be generated
+     * @param entityUser user, for which token will be generated
      * @return JWT in {@link String}
      */
-    public String generateToken(UserDetailsImpl userDetails) {
+    public String generateToken(EntityUser entityUser) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities());
-        return createToken(claims, userDetails.getUsername());
+        claims.put("role", entityUser.getRole());
+        return createToken(claims, entityUser.getUsername());
     }
 
     /**
-     * This method generates token using data from {@link UserDetailsImpl} passed in {@link #generateToken(UserDetailsImpl)}.
+     * This method generates token using taken claims map nad principal username.
      * @param claims required by {@link io.jsonwebtoken.JwtBuilder#setClaims(Map)}
      * @param subject {@code subject} is username of user, for which is the token created
      * @return JWT created as {@link String}
@@ -83,12 +83,12 @@ public class JwtUtil {
     /**
      * This method compares username from token and username from passed {@link UserDetailsImpl} instance.
      * @param token received JWT
-     * @param userDetails {@link UserDetailsImpl} with data about our user
-     * @return {@code true} when username from token is equal to username from {@link UserDetailsImpl}
+     * @param entityUser {@link EntityUser} with data about our user
+     * @return {@code true} when username from token is equal to username from {@link EntityUser}
      */
-    public Boolean validateToken(String token, UserDetailsImpl userDetails) {
+    public Boolean validateToken(String token, EntityUser entityUser) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (username.equals(entityUser.getUsername())) && !isTokenExpired(token);
     }
 
     /**

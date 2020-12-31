@@ -2,16 +2,13 @@ package com.example.toucan.controller;
 
 import com.example.toucan.model.dto.DtoUsernamePassword;
 import com.example.toucan.service.ServiceSign;
-import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/")
 public class ControllerSign {
 
     private final ServiceSign serviceSign;

@@ -3,10 +3,6 @@ package com.example.toucan.security.filters;
 import com.example.toucan.model.entity.EntityNote;
 import com.example.toucan.repository.RepositoryNote;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.service.notedetails.NoteDetailsService;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,16 +15,11 @@ import java.util.*;
 //@Order(Ordered.LOWEST_PRECEDENCE-9)
 public class FilterNotePermissionProcessor extends OncePerRequestFilter {
 
-    private final NoteDetailsService noteDetailsService;
     private final RepositoryNote repositoryNote;
-    private final UserDetailsService userDetailsService;
     private final RepositoryUser repositoryUser;
 
-    public FilterNotePermissionProcessor(NoteDetailsService noteDetailsService, RepositoryNote repositoryNote,
-                                         UserDetailsService userDetailsService, RepositoryUser repositoryUser) {
-        this.noteDetailsService = noteDetailsService;
+    public FilterNotePermissionProcessor(RepositoryNote repositoryNote, RepositoryUser repositoryUser) {
         this.repositoryNote = repositoryNote;
-        this.userDetailsService = userDetailsService;
         this.repositoryUser = repositoryUser;
     }
 
