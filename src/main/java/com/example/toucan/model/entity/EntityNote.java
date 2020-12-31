@@ -33,7 +33,6 @@ public class EntityNote {
     @JoinColumn(name = "owner")
     private EntityUser owner;
 
-
     public UUID getUuid() {
         return uuid;
     }

@@ -5,8 +5,6 @@ import com.example.toucan.model.dto.DtoShortNoteContainer;
 import com.example.toucan.model.entity.EntityNote;
 import com.example.toucan.repository.RepositoryNote;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.service.notedetails.NoteDetailsServiceImpl;
-import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -23,17 +21,12 @@ import java.util.UUID;
 @Service
 public class ServiceNote {
 
-    private final NoteDetailsServiceImpl noteDetailsService;
-    private final UserDetailsServiceImpl userDetailsService;
     private final RepositoryNote repositoryNote;
     private final RepositoryUser repositoryUser;
     private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
 
-    public ServiceNote(NoteDetailsServiceImpl noteDetailsService, UserDetailsServiceImpl userDetailsService,
-                       RepositoryNote repositoryNote, RepositoryUser repositoryUser, ModelMapper modelMapper) {
-        this.noteDetailsService = noteDetailsService;
-        this.userDetailsService = userDetailsService;
+    public ServiceNote(RepositoryNote repositoryNote, RepositoryUser repositoryUser, ModelMapper modelMapper) {
         this.repositoryNote = repositoryNote;
         this.repositoryUser = repositoryUser;
         this.modelMapper = modelMapper;
@@ -41,8 +34,8 @@ public class ServiceNote {
     }
 
     public DtoNote getNote(UUID uuid) {
-        if (noteDetailsService.loadNoteByUUID(uuid) != null) {
-            return modelMapper.map(noteDetailsService.loadNoteByUUID(uuid), DtoNote.class);
+        if (repositoryNote.findByUuid(uuid) != null) {
+            return modelMapper.map(repositoryNote.findByUuid(uuid), DtoNote.class);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

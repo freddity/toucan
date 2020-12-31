@@ -3,7 +3,6 @@ package com.example.toucan.service;
 import com.example.toucan.model.dto.DtoUsernamePassword;
 import com.example.toucan.model.entity.EntityUser;
 import com.example.toucan.repository.RepositoryUser;
-import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
 import com.example.toucan.util.JwtUtil;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,13 +15,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @Service
 public class ServiceSign {
 
-    private final UserDetailsServiceImpl detailsService;
     private final RepositoryUser repositoryUser;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public ServiceSign(UserDetailsServiceImpl detailsService, RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.detailsService = detailsService;
+    public ServiceSign(RepositoryUser repositoryUser, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.repositoryUser = repositoryUser;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -38,7 +35,7 @@ public class ServiceSign {
 
     public String generateToken(DtoUsernamePassword dto) {
         if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
-            return jwtUtil.generateToken(detailsService.loadUserByUsername(dto.getUsername()));
+            return jwtUtil.generateToken(repositoryUser.findByUsername(dto.getUsername()));
         } else {
             throw new ResponseStatusException(FORBIDDEN, "Username or password are incorrect or account been deleted or account doesn't exist");
         }
@@ -46,8 +43,8 @@ public class ServiceSign {
 
     private boolean canUserBeLogged(String username, String password) throws NullPointerException {
         try {
-            return detailsService.loadUserByUsername(username).getPassword().equals(password)
-                    && detailsService.loadUserByUsername(username).isAccountNonLocked();
+            return repositoryUser.findByUsername(username).getPassword().equals(password)
+                    && !repositoryUser.findByUsername(username).isLocked();
         } catch (NullPointerException e) {
             return false;
         }

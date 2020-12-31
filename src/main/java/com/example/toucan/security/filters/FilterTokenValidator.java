@@ -1,6 +1,6 @@
 package com.example.toucan.security.filters;
 
-import com.example.toucan.service.userdetails.UserDetailsServiceImpl;
+import com.example.toucan.repository.RepositoryUser;
 import com.example.toucan.util.JwtUtil;
 import com.example.toucan.util.UUIDUtil;
 import org.springframework.core.Ordered;
@@ -24,18 +24,18 @@ import java.util.*;
 //@Order(Ordered.LOWEST_PRECEDENCE-10)
 public class FilterTokenValidator extends OncePerRequestFilter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final RepositoryUser repositoryUser;
     private final JwtUtil jwtUtil;
 
-    public FilterTokenValidator(UserDetailsServiceImpl userDetailsServiceImpl) {
-        this.userDetailsService = userDetailsServiceImpl;
+    public FilterTokenValidator(RepositoryUser repositoryUser) {
+        this.repositoryUser = repositoryUser;
         this.jwtUtil = new JwtUtil();
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.startsWith("/auth");
+        return path.startsWith("/signup") || path.startsWith("/signin");
     }
 
     @Override
@@ -60,11 +60,12 @@ public class FilterTokenValidator extends OncePerRequestFilter {
             return;
         }
 
+        //todo test how Objects.nonNull() works
         if (!Objects.equals(usernameFromPath, jwtUtil.extractUsername(token))) {
-            if (userDetailsService.isUserExists(usernameFromPath)) {
+            if (Objects.nonNull(repositoryUser.findByUsername(usernameFromPath))) {
                 response.sendError(401, "Given token not provided premission to this resource.");
                 return;
-            } else if (userDetailsService.isUserExists(jwtUtil.extractUsername(token))) {
+            } else if (Objects.nonNull(repositoryUser.findByUsername(jwtUtil.extractUsername(token)))) {
                 response.sendError(401, "Wrong token. User with username contained in token does not exists.");
                 return;
             }
@@ -73,24 +74,12 @@ public class FilterTokenValidator extends OncePerRequestFilter {
             return;
         }
 
-        if (jwtUtil.validateToken(token, userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token)))) {
-            //UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(token);
-            //SecurityContextHolder.getContext().setAuthentication(authResult);
-            response.addHeader("authorization", "Bearer " + jwtUtil.generateToken(userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token))));
+        if (jwtUtil.validateToken(token, repositoryUser.findByUsername(jwtUtil.extractUsername(token)))) {
+            response.addHeader("authorization", "Bearer " + jwtUtil.generateToken(repositoryUser.findByUsername(jwtUtil.extractUsername(token))));
             filterChain.doFilter(request, response);
             return;
         }
 
         response.sendError(401, "You cannot be authorized.");
     }
-
-    /*
-     Actually I don't need below part of code. I use token instead username-password authorization.
-     */
-
-   /* private UsernamePasswordAuthenticationToken getAuthenticationByToken(String token) {
-        String username = jwtUtil.extractUsername(token);
-        Collection<? extends GrantedAuthority> authorities = userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token)).getAuthorities();
-        return new UsernamePasswordAuthenticationToken(username, null, authorities);
-    }*/
 }
