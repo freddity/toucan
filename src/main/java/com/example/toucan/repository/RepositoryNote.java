@@ -1,6 +1,7 @@
 package com.example.toucan.repository;
 
 import com.example.toucan.model.entity.EntityNote;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

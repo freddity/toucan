@@ -18,15 +18,12 @@ public class ControllerSign {
     }
 
     @PostMapping("/signup")
-    public void signUp(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword){
-
-        //todo make validation and information user about errors system
-
-        serviceSign.createUser(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
+    public String createUser(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword){
+        return serviceSign.createUser(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
     }
 
     @PostMapping("/signin")
-    public String signIn(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
-        return serviceSign.generateToken(dtoUsernamePassword);
+    public String takeToken(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
+        return serviceSign.takeToken(dtoUsernamePassword);
     }
 }
