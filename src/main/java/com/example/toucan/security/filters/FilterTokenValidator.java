@@ -35,7 +35,7 @@ public class FilterTokenValidator extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.startsWith("/signup") || path.startsWith("/signin");
+        return request.getRequestURI().equals("/signup") || request.getRequestURI().equals("/signin");
     }
 
     @Override
