@@ -24,6 +24,6 @@ public class ControllerSign {
 
     @PostMapping("/signin")
     public String takeToken(@Valid @NonNull @RequestBody DtoUsernamePassword dtoUsernamePassword) {
-        return serviceSign.takeToken(dtoUsernamePassword);
+        return serviceSign.takeToken(dtoUsernamePassword.getUsername(), dtoUsernamePassword.getPassword());
     }
 }

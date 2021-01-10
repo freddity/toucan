@@ -36,9 +36,9 @@ public class ServiceSign {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken.");
     }
 
-    public String takeToken(DtoUsernamePassword dto) {
-        if (canUserBeLogged(dto.getUsername(), dto.getPassword())) {
-            return jwtUtil.generateToken(repositoryUser.findByUsername(dto.getUsername()));
+    public String takeToken(String username, String password) {
+        if (canUserBeLogged(username, password)) {
+            return jwtUtil.generateToken(repositoryUser.findByUsername(username));
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username or password are incorrect or account been deleted or account doesn't exist");
         }

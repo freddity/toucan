@@ -28,6 +28,7 @@ import java.util.Arrays;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -38,21 +39,73 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ControllerSignTest {
 
+    @Test
+    public void takeToken_valuesOK_statusOK() throws Exception {
+        JwtUtil jwtUtil = new JwtUtil();
+        String token = jwtUtil.generateToken(new EntityUser("user1", "user1"));
+
+        when(serviceSign.takeToken(eq("user1"), eq("user1")))
+                .thenReturn(token);
+
+        mockMvc.perform(
+                post("/signin")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(new DtoUsernamePassword("user1", "user1")))
+        ).andExpect(status().isOk()).andExpect(content().string(token));
+    }
+
+    @Test
+    public void takeToken_nothingProvided_statusOK() throws Exception {
+        JwtUtil jwtUtil = new JwtUtil();
+
+        when(serviceSign.takeToken(eq("user1"), eq("user1")))
+                .thenReturn(jwtUtil.generateToken(new EntityUser("user1", "user1")));
+
+        mockMvc.perform(
+                post("/signin")
+                        .contentType("application/json")
+        ).andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void createUser_valuesOK_statusOK() throws Exception {
+        //todo check out possibility of create object and call method in same expression
+        JwtUtil jwtUtil = new JwtUtil();
+        String token = jwtUtil.generateToken(new EntityUser("user1", "user1"));
+
+        when(serviceSign.createUser(eq("user1"), eq("user1")))
+                .thenReturn(token);
+
+        mockMvc.perform(
+                post("/signup")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(new DtoUsernamePassword("user1", "user1")))
+        ).andExpect(status().isOk()).andExpect(content().string(token));
+    }
+
+    @Test
+    public void createUser_nothingProvided_statusOK() throws Exception {
+        JwtUtil jwtUtil = new JwtUtil();
+
+        when(serviceSign.createUser(eq("user1"), eq("user1")))
+                .thenReturn(jwtUtil.generateToken(new EntityUser("user1", "user1")));
+
+        mockMvc.perform(
+                post("/signup")
+                        .contentType("application/json")
+        ).andExpect(status().is4xxClientError());
+    }
+
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private ServiceSign serviceSign;
-
     @Autowired
     private ApplicationContext applicationContext;
-
     @MockBean
     private RepositoryNote repositoryNote;
-
     @MockBean
     private RepositoryUser repositoryUser;
 
@@ -63,21 +116,4 @@ public class ControllerSignTest {
                 .sorted()
                 .forEach(System.out::println);
     }
-
-    @Test
-    public void createUser_valuesOK_statusOK() throws Exception {
-        //todo check out possibility of create object and call method in same expression
-        JwtUtil jwtUtil = new JwtUtil();
-
-        when(serviceSign.createUser(eq("user1"), eq("user1")))
-                .thenReturn(jwtUtil.generateToken(new EntityUser("user1", "user1")));
-
-        mockMvc.perform(
-                post("/signup")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(new DtoUsernamePassword("user1", "user1")))
-        ).andExpect(status().isOk());
-    }
-
-
 }

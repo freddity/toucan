@@ -42,9 +42,4 @@ public class ControllerProfile {
                               @Valid @NonNull @RequestBody DtoPassword dtoPassword) {
         serviceProfile.deleteAccount(username, dtoPassword);
     }
-
-    /*@ExceptionHandler({ SignatureException.class })
-    public void handleException() {
-        System.out.println("SignatureException");
-    }*/
 }
